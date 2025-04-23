@@ -5,7 +5,7 @@
 #
 # The full license is in the file LICENSE, distributed with this software.
 # ----------------------------------------------------------------------------
-try:
-    from ._version import __version__
-except ModuleNotFoundError:
-    __version__ = "0.0.0+notfound"
+from q2_fungal_traits.types._format import FungalTraitsDirFmt, FungalTraitsFormat
+from q2_fungal_traits.types._type import FungalTraits
+
+__all__ = ["FungalTraitsFormat", "FungalTraitsDirFmt", "FungalTraits"]
