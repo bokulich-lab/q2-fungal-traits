@@ -1,6 +1,5 @@
-# flake8: noqa
 # ----------------------------------------------------------------------------
-# Copyright (c) 2024, Vinzent Risch.
+# Copyright (c) 2025, Vinzent Risch.
 #
 # Distributed under the terms of the Modified BSD License.
 #

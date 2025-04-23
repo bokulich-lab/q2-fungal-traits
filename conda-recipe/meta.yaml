@@ -1,0 +1,41 @@
+package:
+  name: q2-fungal-traits
+  version: {{ PLUGIN_VERSION }}
+
+source:
+  path: ..
+
+build:
+  script: make install
+
+requirements:
+  host:
+    - python {{ python }}
+    - setuptools
+    - versioningit
+    - wheel
+
+  build:
+    - python {{ python }}
+    - setuptools
+    - versioningit
+
+  run:
+    - qiime2 {{ qiime2_epoch }}.*
+    - q2-metadata {{ qiime2_epoch }}.*
+    - q2-types {{ qiime2_epoch }}.*
+    - q2cli {{ qiime2_epoch }}.*
+
+test:
+  requires:
+    - parameterized
+  imports:
+    - q2_fungal_traits
+    - qiime2.plugins.fungal_traits
+  commands:
+    - pytest --pyargs q2_fungal_traits
+
+about:
+  home: https://github.com/bokulich-lab/q2-q2_fungal_traits
+  license: BSD-3-Clause
+  license_family: BSD
