@@ -1,5 +1,5 @@
 # ----------------------------------------------------------------------------
-# Copyright (c) 2025, QIIME 2 development team.
+# Copyright (c) 2025, Vinzent Risch.
 #
 # Distributed under the terms of the Modified BSD License.
 #
