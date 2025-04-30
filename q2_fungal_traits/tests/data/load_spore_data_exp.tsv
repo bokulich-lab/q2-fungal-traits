@@ -1,0 +1,5 @@
+phylum	class	order	family	genus	names_to_use	SporeType	SporeVolume	spore_length	spore_width	SporeArea	Q_ratio
+"""Zygomycetous fungi"""	Asellariomycetes	Asellariales	Asellariaceae	Asellaria	Asellaria_jatibonicua	Multinucleate_sexual_spores	1767.1458676442585	15.0	15.0	176.71458676442586	1.0
+"""Zygomycetous fungi"""	Asellariomycetes	Asellariales	Asellariaceae	Asellaria	Asellaria_jatibunicua	Multinucleate_sexual_spores	1767.1458676442585	15.0	15.0	176.71458676442586	1.0
+"""Zygomycetous fungi"""	Calcarisporiellomycetes	Calcarisporiellales	Calcarisporiellaceae	Calcarisporiella	Calcarisporiella_thermophila	Mitospores	75.66002307395418	6.5	4.5	23.954643983622173	1.4
+"""Zygomycetous fungi"""	Calcarisporiellomycetes	Calcarisporiellales	Calcarisporiellaceae	Echinochlamydosporium	Echinochlamydosporium_variabile	Mitospores	1027.4897187070828	11.5	10.525	110.34156972341177	1.1741071428571428

@@ -15,16 +15,13 @@ from q2_types.feature_data import TSVTaxonomyDirectoryFormat
 
 
 def load_taxonomy(taxonomy_path: str) -> pd.DataFrame:
-    taxonomy = pd.read_csv(os.path.join(taxonomy_path, "taxonomy.tsv"), sep="\t")
+    taxonomy = pd.read_csv(taxonomy_path, sep="\t")
 
     # Split the taxon string into separate columns
     taxonomy_split = taxonomy["Taxon"].str.split(";", expand=True)
 
     # Extract taxonomic prefixes from a fully annotated row
-    for _, row in taxonomy_split.iterrows():
-        if row.notna().all() and row.map(lambda x: isinstance(x, str)).all():
-            prefixes = row.map(lambda x: x.split("__")[0])
-            break
+    prefixes = taxonomy_split.dropna().iloc[0].map(lambda x: x.split("__")[0])
 
     # Name the columns with the appropriate taxonomic levels
     taxonomy_split.columns = prefixes
@@ -36,6 +33,7 @@ def load_taxonomy(taxonomy_path: str) -> pd.DataFrame:
     taxonomy_split = taxonomy_split.applymap(
         lambda x: x.split("__")[-1] if isinstance(x, str) else x
     )
+
     cols_to_add = [
         col for col in ["family", "genus", "species"] if col in taxonomy_split.columns
     ]
@@ -46,20 +44,22 @@ def load_taxonomy(taxonomy_path: str) -> pd.DataFrame:
             "Please check your taxonomy file."
         )
 
-    return taxonomy[["Feature ID"]].join(taxonomy_split[cols_to_add])
+    taxonomy = taxonomy[["Feature ID"]].join(taxonomy_split[cols_to_add])
+
+    # To adhere to the qiime metadata format
+    taxonomy.rename(columns={"Feature ID": "feature-id"}, inplace=True)
+    taxonomy.set_index("feature-id", inplace=True)
+
+    return taxonomy
 
 
-def load_spore_data() -> pd.DataFrame:
-    spore_data = pd.read_csv(
-        str(files("q2_fungal_traits.assets").joinpath("Spore_data_12Nov21.tsv")),
-        sep="\t",
-    )
-    spore_data["names_to_use"] = spore_data["names_to_use"].str.replace(
-        " ", "_", regex=False
-    )
-    spore_data["SporeType"] = spore_data["SporeType"].str.replace(" ", "_", regex=False)
-    spore_data = spore_data[spore_data["SporeVolume"] > 0].copy()
-    spore_data["log10_spore_volume"] = np.log10(spore_data["SporeVolume"])
+def load_spore_data(spore_data_path) -> pd.DataFrame:
+    spore_data = pd.read_csv(spore_data_path, sep="\t")
+    for col in [
+        "names_to_use",
+        "SporeType",
+    ]:
+        spore_data[col] = spore_data[col].str.replace(" ", "_", regex=False)
     return spore_data
 
 
@@ -94,10 +94,8 @@ def add_spore_volume(taxonomy: pd.DataFrame, spore_data: pd.DataFrame) -> pd.Dat
                 rank_means = spore_type_filtered[
                     spore_type_filtered[rank].isin(missing_genera)
                 ]
-                rank_means = (
-                    rank_means.groupby(rank)["log10_spore_volume"]
-                    .mean()
-                    .apply(lambda x: 10**x)
+                rank_means = rank_means.groupby(rank)["SporeVolume"].apply(
+                    lambda x: 10 ** np.mean(np.log10(x))
                 )
                 rank_hits = taxonomy.loc[missing, rank].map(rank_means)
                 mask = rank_hits.notna()
@@ -125,8 +123,10 @@ def add_fungal_traits(taxonomy, fungal_traits):
 
 
 def annotate(taxonomy: TSVTaxonomyDirectoryFormat) -> qiime2.Metadata:
-    taxonomy = load_taxonomy(str(taxonomy))
-    spore_data = load_spore_data()
+    taxonomy = load_taxonomy(os.path.join(taxonomy.path, "taxonomy.tsv"))
+    spore_data = load_spore_data(
+        str(files("q2_fungal_traits.assets").joinpath("Spore_data_12Nov21.tsv"))
+    )
     fungal_traits = pd.read_csv(
         str(
             files("q2_fungal_traits.assets").joinpath(
@@ -138,8 +138,5 @@ def annotate(taxonomy: TSVTaxonomyDirectoryFormat) -> qiime2.Metadata:
 
     annotations_spores = add_spore_volume(taxonomy, spore_data)
     annotations_spores_traits = add_fungal_traits(annotations_spores, fungal_traits)
-
-    annotations_spores_traits.rename(columns={"Feature ID": "feature-id"}, inplace=True)
-    annotations_spores_traits.set_index("feature-id", inplace=True)
 
     return qiime2.Metadata(annotations_spores_traits)
