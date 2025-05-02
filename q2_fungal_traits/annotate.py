@@ -86,8 +86,8 @@ def add_spore_volume(taxonomy: pd.DataFrame, spore_data: pd.DataFrame) -> pd.Dat
             taxonomy.loc[mask, volume_col] = species_hits[mask]
             taxonomy.loc[mask, info_col] = "species"
 
+        # Genus or family level fallback
         for rank in ["genus", "family"]:
-            # Genus-level fallback
             if rank in taxonomy.columns:
                 missing = taxonomy[volume_col].isna()
                 missing_genera = taxonomy.loc[missing, rank].dropna().unique()
