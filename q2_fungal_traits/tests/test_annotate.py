@@ -17,6 +17,7 @@ from q2_fungal_traits.annotate import (
     add_fungal_traits,
     add_spore_volume,
     annotate,
+    drop_duplicates,
     load_spore_data,
     load_taxonomy,
 )
@@ -25,20 +26,9 @@ from q2_fungal_traits.annotate import (
 class TestAnnotate(TestPluginBase):
     package = "q2_fungal_traits.tests"
 
-    def setUp(self):
-        super().setUp()
-        self.taxonomy_data = {
-            "feature-id": ["abc123"],
-            "family": ["Saccharomycetales_fam_Incertae_sedis"],
-            "genus": ["Candida"],
-            "species": ["Candida_sp"],
-        }
-        self.loaded_taxonomy = pd.DataFrame(self.taxonomy_data).set_index("feature-id")
-
     def test_load_taxonomy(self):
         obs = load_taxonomy(self.get_data_path("taxonomy_add_spore_volume.tsv"))
         exp = pd.read_csv(self.get_data_path("load_taxonomy_exp.tsv"), sep="\t")
-        exp = exp.set_index("feature-id")
         pd.testing.assert_frame_equal(obs, exp)
 
     def test_load_taxonomy_value_error(self):
@@ -50,7 +40,9 @@ class TestAnnotate(TestPluginBase):
         exp = pd.read_csv(self.get_data_path("load_spore_data_exp.tsv"), sep="\t")
         pd.testing.assert_frame_equal(obs, exp)
 
-    def test_add_fungal_traits(self):
+    @patch("q2_fungal_traits.annotate.drop_duplicates")
+    def test_add_fungal_traits(self, mock_drop_duplicates):
+        mock_drop_duplicates.side_effect = lambda x: x
         fungal_traits = pd.read_csv(
             str(
                 files("q2_fungal_traits.assets").joinpath(
@@ -59,7 +51,8 @@ class TestAnnotate(TestPluginBase):
             ),
             sep="\t",
         )
-        obs = add_fungal_traits(self.loaded_taxonomy, fungal_traits)
+        taxonomy = pd.read_csv(self.get_data_path("load_taxonomy_exp.tsv"), sep="\t")
+        obs = add_fungal_traits(taxonomy, fungal_traits)
         exp = pd.read_csv(self.get_data_path("add_fungal_traits_exp.tsv"), sep="\t")
         pd.testing.assert_frame_equal(obs.astype(str), exp.astype(str))
 
@@ -70,7 +63,6 @@ class TestAnnotate(TestPluginBase):
         )
         obs = add_spore_volume(taxonomy_df, spore_data)
         exp = pd.read_csv(self.get_data_path("add_spore_volume_exp.tsv"), sep="\t")
-        exp = exp.set_index("feature-id")
         pd.testing.assert_frame_equal(obs.astype(str), exp.astype(str))
 
     @patch("q2_fungal_traits.annotate.add_fungal_traits")
@@ -84,10 +76,7 @@ class TestAnnotate(TestPluginBase):
         mock_add_spore_volume,
         mock_add_fungal_traits,
     ):
-        df = pd.DataFrame({"genus": ["Datroniella"]}, index=["1"])
-        df.index.name = "feature-id"
-        df.index = df.index.astype(str)
-        df.index = df.index.astype(str)
+        df = pd.DataFrame({"genus": ["Datroniella"], "feature-id": ["1"]}, index=["1"])
 
         mock_add_fungal_traits.return_value = df
 
@@ -95,3 +84,10 @@ class TestAnnotate(TestPluginBase):
             TSVTaxonomyDirectoryFormat(self.get_data_path("taxonomy.tsv"), mode="r")
         )
         self.assertIsInstance(obs, qiime2.Metadata)
+
+    def test_drop_duplicates(self):
+        df = pd.read_csv(self.get_data_path("drop_duplicates_input.tsv"), sep="\t")
+        obs = drop_duplicates(df)
+        obs.reset_index(drop=True, inplace=True)
+        exp = pd.read_csv(self.get_data_path("drop_duplicates_exp.tsv"), sep="\t")
+        pd.testing.assert_frame_equal(obs.astype(str), exp.astype(str))

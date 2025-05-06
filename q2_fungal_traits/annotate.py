@@ -46,10 +46,6 @@ def load_taxonomy(taxonomy_path: str) -> pd.DataFrame:
 
     taxonomy = taxonomy[["Feature ID"]].join(taxonomy_split[cols_to_add])
 
-    # To adhere to the qiime metadata format
-    taxonomy.rename(columns={"Feature ID": "feature-id"}, inplace=True)
-    taxonomy.set_index("feature-id", inplace=True)
-
     return taxonomy
 
 
@@ -64,6 +60,30 @@ def load_spore_data(spore_data_path) -> pd.DataFrame:
 
 
 def add_spore_volume(taxonomy: pd.DataFrame, spore_data: pd.DataFrame) -> pd.DataFrame:
+    """
+    Annotate a taxonomy DataFrame with spore volume data.
+
+    The annotation follows a hierarchical matching strategy:
+    1. Species-level: Direct string match using the species columns.
+    2. Genus-level: For unmatched entries, log-mean spore volume is computed per genus,
+       and mapped to matching genera.
+    3. Family-level: If genus-level data is still missing, the process is repeated
+       at the family level.
+
+    If no match is found, the volume remains `NaN` and the information column is set
+    to `"no hit"`.
+
+    Parameters:
+        taxonomy (pd.DataFrame): The input DataFrame containing at least 'genus' and/or
+                                 'family',and optionally a 'species' column.
+        spore_data (pd.DataFrame): A DataFrame containing the spore volume data.
+
+    Returns:
+        pd.DataFrame: The input `taxonomy` DataFrame with added spore volume columns
+                      for each spore type and information columns denoting what level
+                      the spore data is derived from.
+    """
+
     for spore_type in [
         "Mitospores",
         "Meiospores",
@@ -102,14 +122,52 @@ def add_spore_volume(taxonomy: pd.DataFrame, spore_data: pd.DataFrame) -> pd.Dat
                 taxonomy.loc[missing[missing].index[mask], volume_col] = rank_hits[mask]
                 taxonomy.loc[missing[missing].index[mask], info_col] = rank
 
-    return taxonomy.drop(columns=["family", "species"], errors="ignore")
+    return taxonomy
+
+
+def drop_duplicates(df):
+    """
+    Handles duplicated IDs in the merged taxonomy with fungal traits.
+
+    This function first removes exact duplicate rows. Then it removes duplicated rows
+    due to inconsistent family assignments of the genera 'Caudospora' and
+    'Campanulospora' by keeping the most appropriate row based on the assigned family.
+
+    Parameters:
+        df (pd.DataFrame): A pandas DataFrame of taxonomy merged with fungal trait data.
+
+    Returns:
+        pd.DataFrame: The cleaned DataFrame with appropriate duplicates removed.
+    """
+    df = df.drop_duplicates()
+
+    dup_ids = df[df["Feature ID"].duplicated(keep=False)]
+
+    for feature_id, group in dup_ids.groupby("Feature ID"):
+        genus = group["GENUS"].iloc[0]
+        if genus in ["Caudospora", "Campanulospora"]:
+            row_micro = group.query(
+                "Family == 'Microsporidea family incertae sedis'"
+            ).squeeze()
+            row_other = group.query(
+                "Family != 'Microsporidea family incertae sedis'"
+            ).squeeze()
+
+            if row_other["Family"] == row_other["family"]:
+                df = df.drop(index=row_micro.name)
+            else:
+                df = df.drop(index=row_other.name)
+
+    return df
 
 
 def add_fungal_traits(taxonomy, fungal_traits):
-    result = pd.merge(
+    merged = pd.merge(
         taxonomy, fungal_traits, left_on="genus", right_on="GENUS", how="left"
     )
-    return result.drop(
+    unique_merged = drop_duplicates(merged)
+
+    return unique_merged.drop(
         columns=[
             "GENUS",
             "COMMENT on genus",
@@ -118,7 +176,10 @@ def add_fungal_traits(taxonomy, fungal_traits):
             "Class",
             "Order",
             "Family",
-        ]
+            "family",
+            "species",
+        ],
+        errors="ignore",
     )
 
 
@@ -136,7 +197,12 @@ def annotate(taxonomy: TSVTaxonomyDirectoryFormat) -> qiime2.Metadata:
         sep="\t",
     )
 
+    # Add spore volume data and fungal traits
     annotations_spores = add_spore_volume(taxonomy, spore_data)
     annotations_spores_traits = add_fungal_traits(annotations_spores, fungal_traits)
+
+    # To adhere to the qiime metadata format
+    annotations_spores_traits.rename(columns={"Feature ID": "feature-id"}, inplace=True)
+    annotations_spores_traits.set_index("feature-id", inplace=True)
 
     return qiime2.Metadata(annotations_spores_traits)
