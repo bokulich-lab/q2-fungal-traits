@@ -34,7 +34,7 @@ plugin.methods.register_function(
     output_descriptions={"fungal_traits_metadata": "Fungal traits metadata."},
     name="Fungal traits annotation.",
     description=(
-        "Annotate fungal sequences with lifestyle traits and spore volume data."
+        "Annotate fungal taxonomy data with lifestyle traits and spore volume data."
     ),
     citations=[],
 )

@@ -1,9 +1,9 @@
 channels:
-- https://packages.qiime2.org/qiime2/2025.4/amplicon/passed
+- https://packages.qiime2.org/qiime2/2025.4/amplicon/tiny
 - conda-forge
 - bioconda
 dependencies:
-  - qiime2-amplicon
+  - qiime2-tiny
   - pip
   - pip:
      - "q2-fungal-traits @ git+https://github.com/bokulich-lab/q2-fungal-traits.git"
