@@ -19,8 +19,10 @@ plugin = Plugin(
     version=__version__,
     website="https://github.com/bokulich-lab/q2-fugal-traits",
     package="q2_fungal_traits",
-    description="A QIIME 2 plugin to annotate fungal sequences with lifestyle traits.",
-    short_description="Lifestyle traits annotation of fungal sequences.",
+    description=(
+        "A QIIME 2 plugin to annotate fungal taxonomy data with lifestyle traits."
+    ),
+    short_description="Lifestyle traits annotation of fungal taxonomies.",
     citations=[citations["Caporaso-Bolyen-2024"]],
 )
 
@@ -36,5 +38,5 @@ plugin.methods.register_function(
     description=(
         "Annotate fungal taxonomy data with lifestyle traits and spore volume data."
     ),
-    citations=[],
+    citations=[citations["polme2020fungaltraits"], citations["abrego2024airborne"]],
 )
