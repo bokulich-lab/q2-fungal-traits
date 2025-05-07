@@ -51,11 +51,10 @@ def load_taxonomy(taxonomy_path: str) -> pd.DataFrame:
 
 def load_spore_data(spore_data_path) -> pd.DataFrame:
     spore_data = pd.read_csv(spore_data_path, sep="\t")
-    for col in [
-        "names_to_use",
-        "SporeType",
-    ]:
+
+    for col in ["names_to_use", "SporeType"]:
         spore_data[col] = spore_data[col].str.replace(" ", "_", regex=False)
+
     return spore_data
 
 
