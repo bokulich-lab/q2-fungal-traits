@@ -197,11 +197,12 @@ def annotate(taxonomy: TSVTaxonomyDirectoryFormat) -> qiime2.Metadata:
     )
 
     # Add spore volume data and fungal traits
-    annotations_spores = add_spore_volume(taxonomy, spore_data)
-    annotations_spores_traits = add_fungal_traits(annotations_spores, fungal_traits)
+    annotations = add_spore_volume(taxonomy, spore_data)
+    if "genus" in annotations.columns:
+        annotations = add_fungal_traits(annotations, fungal_traits)
 
     # To adhere to the qiime metadata format
-    annotations_spores_traits.rename(columns={"Feature ID": "feature-id"}, inplace=True)
-    annotations_spores_traits.set_index("feature-id", inplace=True)
+    annotations.rename(columns={"Feature ID": "feature-id"}, inplace=True)
+    annotations.set_index("feature-id", inplace=True)
 
-    return qiime2.Metadata(annotations_spores_traits)
+    return qiime2.Metadata(annotations)
