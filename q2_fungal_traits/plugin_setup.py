@@ -30,10 +30,10 @@ plugin.methods.register_function(
     function=annotate,
     inputs={"taxonomy": FeatureData[Taxonomy]},
     parameters={},
-    outputs=[("fungal_traits_metadata", ImmutableMetadata)],
+    outputs=[("fungal_traits", ImmutableMetadata)],
     input_descriptions={"taxonomy": "Fungal taxonomy."},
     parameter_descriptions={},
-    output_descriptions={"fungal_traits_metadata": "Fungal traits metadata."},
+    output_descriptions={"fungal_traits": "Fungal traits metadata."},
     name="Fungal traits annotation.",
     description=(
         "Annotate fungal taxonomy data with lifestyle traits and spore volume data."
