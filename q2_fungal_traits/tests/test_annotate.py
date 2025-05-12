@@ -78,6 +78,7 @@ class TestAnnotate(TestPluginBase):
     ):
         df = pd.DataFrame({"genus": ["Datroniella"], "feature-id": ["1"]}, index=["1"])
 
+        mock_add_spore_volume.return_value = df
         mock_add_fungal_traits.return_value = df
 
         obs = annotate(
