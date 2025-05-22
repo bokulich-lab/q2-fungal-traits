@@ -44,7 +44,7 @@ def load_taxonomy(taxonomy_path: str) -> pd.DataFrame:
             "Please check your taxonomy file."
         )
 
-    taxonomy = taxonomy[["Feature ID"]].join(taxonomy_split[cols_to_add])
+    taxonomy = taxonomy.join(taxonomy_split[cols_to_add])
 
     return taxonomy
 
@@ -89,11 +89,13 @@ def add_spore_volume(taxonomy: pd.DataFrame, spore_data: pd.DataFrame) -> pd.Dat
         "Multinucleate_sexual_spores",
         "Multinucleate_asexual_spores",
     ]:
+        taxon_col = f"{spore_type.lower()}_taxon"
         volume_col = f"{spore_type.lower()}_spore_volume"
-        info_col = f"{spore_type.lower()}_spore_volume_information"
+        info_col = f"{spore_type.lower()}_spore_volume_matching_level"
 
+        taxonomy[taxon_col] = np.nan
         taxonomy[volume_col] = np.nan
-        taxonomy[info_col] = "no hit"
+        taxonomy[info_col] = np.nan
 
         spore_type_filtered = spore_data[spore_data["SporeType"] == spore_type]
 
@@ -104,24 +106,29 @@ def add_spore_volume(taxonomy: pd.DataFrame, spore_data: pd.DataFrame) -> pd.Dat
             mask = species_hits.notna()
             taxonomy.loc[mask, volume_col] = species_hits[mask]
             taxonomy.loc[mask, info_col] = "species"
+            taxonomy.loc[mask, taxon_col] = taxonomy.loc[mask, "species"]
 
         # Genus or family level fallback
         for rank in ["genus", "family"]:
             if rank in taxonomy.columns:
                 missing = taxonomy[volume_col].isna()
-                missing_genera = taxonomy.loc[missing, rank].dropna().unique()
-                rank_means = spore_type_filtered[
-                    spore_type_filtered[rank].isin(missing_genera)
-                ]
-                rank_means = rank_means.groupby(rank)["SporeVolume"].apply(
-                    lambda x: 10 ** np.mean(np.log10(x))
-                )
-                rank_hits = taxonomy.loc[missing, rank].map(rank_means)
-                mask = rank_hits.notna()
-                taxonomy.loc[missing[missing].index[mask], volume_col] = rank_hits[mask]
-                taxonomy.loc[missing[missing].index[mask], info_col] = rank
+                ranks_to_check = taxonomy.loc[missing, rank].dropna().unique()
 
-    return taxonomy
+                rank_means = (
+                    spore_type_filtered[spore_type_filtered[rank].isin(ranks_to_check)]
+                    .groupby(rank)["SporeVolume"]
+                    .apply(lambda x: 10 ** np.mean(np.log10(x)))
+                )
+
+                rank_matches = taxonomy.loc[missing, rank].map(rank_means)
+                matched = rank_matches.notna()
+
+                idx = rank_matches[matched].index
+                taxonomy.loc[idx, volume_col] = rank_matches[matched]
+                taxonomy.loc[idx, info_col] = rank
+                taxonomy.loc[idx, taxon_col] = taxonomy.loc[idx, rank]
+
+    return taxonomy.drop(columns=["species", "family"], errors="ignore")
 
 
 def drop_duplicates(df):
@@ -175,8 +182,6 @@ def add_fungal_traits(taxonomy, fungal_traits):
             "Class",
             "Order",
             "Family",
-            "family",
-            "species",
         ],
         errors="ignore",
     )
@@ -197,12 +202,16 @@ def annotate(taxonomy: TSVTaxonomyDirectoryFormat) -> qiime2.Metadata:
     )
 
     # Add spore volume data and fungal traits
-    annotations = add_spore_volume(taxonomy, spore_data)
-    if "genus" in annotations.columns:
-        annotations = add_fungal_traits(annotations, fungal_traits)
+    if "genus" in taxonomy.columns:
+        taxonomy = add_fungal_traits(taxonomy, fungal_traits)
+    taxonomy = add_spore_volume(taxonomy, spore_data)
 
     # To adhere to the qiime metadata format
-    annotations.rename(columns={"Feature ID": "feature-id"}, inplace=True)
-    annotations.set_index("feature-id", inplace=True)
+    taxonomy.rename(
+        columns={"Feature ID": "feature-id", "genus": "fungal_traits_genus"},
+        inplace=True,
+    )
+    taxonomy.columns = taxonomy.columns.str.lower()
+    taxonomy.set_index("feature-id", inplace=True)
 
-    return qiime2.Metadata(annotations)
+    return qiime2.Metadata(taxonomy)
