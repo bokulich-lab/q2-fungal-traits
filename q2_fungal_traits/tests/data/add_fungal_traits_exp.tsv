@@ -1,0 +1,4 @@
+Feature ID	genus	primary_lifestyle	Secondary_lifestyle	Comment_on_lifestyle_template	Endophytic_interaction_capability_template	Plant_pathogenic_capacity_template	Decay_substrate_template	Decay_type_template	Aquatic_habitat_template	Animal_biotrophic_capacity_template	Specific_hosts	Growth_form_template	Fruitbody_type_template	Hymenium_type_template	Ectomycorrhiza_exploration_type_template	Ectomycorrhiza_lineage_template	primary_photobiont	secondary_photobiont
+1	Datroniella	wood_saprotroph					wood	white_rot	non-aquatic			filamentous_mycelium	corticioid	poroid
+2	Datronia	wood_saprotroph					wood	white_rot	non-aquatic			filamentous_mycelium	corticioid	poroid
+3	Glomus	arbuscular_mycorrhizal	root-associated		root_endophyte				partly_freshwater_(partly_non-aquatic)			filamentous_mycelium	none	none
