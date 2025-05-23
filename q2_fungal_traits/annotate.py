@@ -90,8 +90,8 @@ def add_spore_volume(taxonomy: pd.DataFrame, spore_data: pd.DataFrame) -> pd.Dat
         "Multinucleate_asexual_spores",
     ]:
         taxon_col = f"{spore_type.lower()}_taxon"
-        volume_col = f"{spore_type.lower()}_spore_volume"
-        info_col = f"{spore_type.lower()}_spore_volume_matching_level"
+        volume_col = f"{spore_type.lower()}_volume"
+        info_col = f"{spore_type.lower()}_matching_level"
 
         taxonomy[taxon_col] = np.nan
         taxonomy[volume_col] = np.nan
