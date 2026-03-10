@@ -10,7 +10,7 @@ from importlib.resources import files
 
 import numpy as np
 import pandas as pd
-import qiime2
+import rachis
 from q2_types.feature_data import TSVTaxonomyDirectoryFormat
 
 
@@ -187,7 +187,7 @@ def add_fungal_traits(taxonomy, fungal_traits):
     )
 
 
-def annotate(taxonomy: TSVTaxonomyDirectoryFormat) -> qiime2.Metadata:
+def annotate(taxonomy: TSVTaxonomyDirectoryFormat) -> rachis.Metadata:
     taxonomy = load_taxonomy(os.path.join(taxonomy.path, "taxonomy.tsv"))
     spore_data = load_spore_data(
         str(files("q2_fungal_traits.assets").joinpath("Spore_data_12Nov21.tsv"))
@@ -214,4 +214,4 @@ def annotate(taxonomy: TSVTaxonomyDirectoryFormat) -> qiime2.Metadata:
     taxonomy.columns = taxonomy.columns.str.lower()
     taxonomy.set_index("feature-id", inplace=True)
 
-    return qiime2.Metadata(taxonomy)
+    return rachis.Metadata(taxonomy)

@@ -7,7 +7,7 @@
 # ----------------------------------------------------------------------------
 from q2_types.feature_data import FeatureData, Taxonomy
 from q2_types.metadata import ImmutableMetadata
-from qiime2.plugin import Citations, Plugin
+from rachis.plugin import Citations, Plugin
 
 from q2_fungal_traits import __version__
 from q2_fungal_traits.annotate import annotate

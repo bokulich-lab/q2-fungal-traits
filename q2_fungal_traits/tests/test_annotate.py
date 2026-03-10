@@ -9,9 +9,9 @@ from importlib.resources import files
 from unittest.mock import patch
 
 import pandas as pd
-import qiime2
+import rachis
 from q2_types.feature_data import TSVTaxonomyDirectoryFormat
-from qiime2.plugin.testing import TestPluginBase
+from rachis.plugin.testing import TestPluginBase
 
 from q2_fungal_traits.annotate import (
     add_fungal_traits,
@@ -87,7 +87,7 @@ class TestAnnotate(TestPluginBase):
         obs = annotate(
             TSVTaxonomyDirectoryFormat(self.get_data_path("taxonomy.tsv"), mode="r")
         )
-        self.assertIsInstance(obs, qiime2.Metadata)
+        self.assertIsInstance(obs, rachis.Metadata)
 
     def test_drop_duplicates(self):
         df = pd.read_csv(self.get_data_path("drop_duplicates_input.tsv"), sep="\t")
