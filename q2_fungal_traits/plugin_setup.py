@@ -23,7 +23,7 @@ plugin = Plugin(
         "A QIIME 2 plugin to annotate fungal taxonomy data with lifestyle traits."
     ),
     short_description="Lifestyle traits annotation of fungal taxonomies.",
-    citations=[citations["Caporaso-Bolyen-2024"]],
+    citations=[],
 )
 
 plugin.methods.register_function(

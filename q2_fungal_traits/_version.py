@@ -1,1 +1,1 @@
-__version__ = "0.0.1+24.gb897cdd.dirty"
+__version__ = "0.0.1+26.gaddcbd7.dirty"
