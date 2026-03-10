@@ -80,6 +80,9 @@ class TestAnnotate(TestPluginBase):
 
         mock_add_spore_volume.return_value = df
         mock_add_fungal_traits.return_value = df
+        mock_load_taxonomy.return_value = pd.read_csv(
+            self.get_data_path("load_taxonomy_exp.tsv"), sep="\t"
+        )
 
         obs = annotate(
             TSVTaxonomyDirectoryFormat(self.get_data_path("taxonomy.tsv"), mode="r")
