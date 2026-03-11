@@ -17,7 +17,7 @@ from q2_fungal_traits.annotate import (
     add_fungal_traits,
     add_spore_volume,
     annotate,
-    drop_duplicates,
+    handle_duplicates,
     load_spore_data,
     load_taxonomy,
 )
@@ -40,7 +40,7 @@ class TestAnnotate(TestPluginBase):
         exp = pd.read_csv(self.get_data_path("load_spore_data_exp.tsv"), sep="\t")
         pd.testing.assert_frame_equal(obs, exp)
 
-    @patch("q2_fungal_traits.annotate.drop_duplicates")
+    @patch("q2_fungal_traits.annotate.handle_duplicates")
     def test_add_fungal_traits(self, mock_drop_duplicates):
         mock_drop_duplicates.side_effect = lambda x: x
         fungal_traits = pd.read_csv(
@@ -65,33 +65,17 @@ class TestAnnotate(TestPluginBase):
         exp = pd.read_csv(self.get_data_path("add_spore_volume_exp.tsv"), sep="\t")
         pd.testing.assert_frame_equal(obs.astype(str), exp.astype(str))
 
-    @patch("q2_fungal_traits.annotate.add_fungal_traits")
-    @patch("q2_fungal_traits.annotate.add_spore_volume")
-    @patch("q2_fungal_traits.annotate.load_spore_data")
-    @patch("q2_fungal_traits.annotate.load_taxonomy")
-    def test_annotate(
-        self,
-        mock_load_taxonomy,
-        mock_load_spore_data,
-        mock_add_spore_volume,
-        mock_add_fungal_traits,
-    ):
-        df = pd.DataFrame({"genus": ["Datroniella"], "feature-id": ["1"]}, index=["1"])
-
-        mock_add_spore_volume.return_value = df
-        mock_add_fungal_traits.return_value = df
-        mock_load_taxonomy.return_value = pd.read_csv(
-            self.get_data_path("load_taxonomy_exp.tsv"), sep="\t"
-        )
-
+    def test_annotate(self):
         obs = annotate(
-            TSVTaxonomyDirectoryFormat(self.get_data_path("taxonomy.tsv"), mode="r")
+            TSVTaxonomyDirectoryFormat(self.get_data_path("taxonomy_dir_fmt"), mode="r")
         )
         self.assertIsInstance(obs, rachis.Metadata)
+        exp = pd.read_csv(self.get_data_path("metadata_out.tsv"), sep="\t", index_col=0)
+        pd.testing.assert_frame_equal(obs.to_dataframe().astype(str), exp.astype(str))
 
     def test_drop_duplicates(self):
         df = pd.read_csv(self.get_data_path("drop_duplicates_input.tsv"), sep="\t")
-        obs = drop_duplicates(df)
+        obs = handle_duplicates(df)
         obs.reset_index(drop=True, inplace=True)
         exp = pd.read_csv(self.get_data_path("drop_duplicates_exp.tsv"), sep="\t")
         pd.testing.assert_frame_equal(obs.astype(str), exp.astype(str))
