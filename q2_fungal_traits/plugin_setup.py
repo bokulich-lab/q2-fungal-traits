@@ -20,7 +20,8 @@ plugin = Plugin(
     website="https://github.com/bokulich-lab/q2-fugal-traits",
     package="q2_fungal_traits",
     description=(
-        "A QIIME 2 plugin to annotate fungal taxonomy data with lifestyle traits."
+        "A QIIME 2 plugin to annotate fungal taxonomy data with lifestyle and spore "
+        "volume data."
     ),
     short_description="Lifestyle traits annotation of fungal taxonomies.",
     citations=[],
