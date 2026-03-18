@@ -35,6 +35,14 @@ class TestAnnotate(TestPluginBase):
         with self.assertRaisesRegex(ValueError, "None of the taxonomy levels"):
             load_taxonomy(self.get_data_path("taxonomy_missing_ranks.tsv"))
 
+    def test_load_taxonomy_normalizes_species_separators(self):
+        obs = load_taxonomy(self.get_data_path("taxonomy_normalize_species.tsv"))
+        self.assertEqual(obs.loc[0, "species"], "Amanita muscaria var")
+
+    def test_load_taxonomy_prepends_genus_to_species(self):
+        obs = load_taxonomy(self.get_data_path("taxonomy_species_needs_genus.tsv"))
+        self.assertEqual(obs.loc[0, "species"], "Amanita muscaria")
+
     def test_load_spore_data(self):
         obs = load_spore_data(self.get_data_path("Spore_data_12Nov21_test.tsv"))
         exp = pd.read_csv(self.get_data_path("load_spore_data_exp.tsv"), sep="\t")

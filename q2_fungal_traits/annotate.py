@@ -51,6 +51,21 @@ def load_taxonomy(taxonomy_path: str) -> pd.DataFrame:
         lambda x: x.split("__")[-1] if isinstance(x, str) else x
     )
 
+    # Replace any separators with a space
+    taxonomy_split = taxonomy_split.applymap(
+        lambda x: x.replace("-", " ").replace("_", " ") if isinstance(x, str) else x
+    )
+
+    # Add genus name to species if it is not already there
+    if {"genus", "species"}.issubset(taxonomy_split.columns):
+        genus = taxonomy_split["genus"]
+        species = taxonomy_split["species"]
+        species_has_genus = species.fillna("").str.split().str[0].eq(genus.fillna(""))
+        needs_genus_prefix = genus.notna() & species.notna() & ~species_has_genus
+        taxonomy_split.loc[needs_genus_prefix, "species"] = (
+            genus[needs_genus_prefix] + " " + species[needs_genus_prefix]
+        )
+
     cols_to_add = [
         col
         for col in ["phylum", "family", "genus", "species"]
