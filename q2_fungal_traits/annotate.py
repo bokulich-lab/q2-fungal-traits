@@ -14,22 +14,72 @@ import rachis
 from q2_types.feature_data import TSVTaxonomyDirectoryFormat
 
 
+def normalize_taxon_key(value):
+    """Normalize taxon strings for case-insensitive matching across datasets."""
+    if not isinstance(value, str):
+        return value
+
+    value = value.replace("-", " ").replace("_", " ")
+    value = " ".join(value.split())
+
+    if value == "":
+        return np.nan
+
+    return value.casefold()
+
+
+def ensure_species_key_has_genus(taxonomy: pd.DataFrame) -> pd.DataFrame:
+    """
+    Ensure normalized species keys include the normalized genus prefix.
+
+    For rows where both ``genus_tax_key`` and ``species_tax_key`` are present,
+    this function checks whether the normalized species key already starts with
+    the normalized genus key. If not, the genus key is prepended so downstream
+    species-level matching uses a consistent ``genus species`` form.
+
+    Parameters:
+        taxonomy (pd.DataFrame): Taxonomy DataFrame that may contain
+            ``genus_tax_key`` and ``species_tax_key``.
+
+    Returns:
+        pd.DataFrame: ``taxonomy`` with ``species_tax_key`` updated where
+        the genus prefix was missing.
+    """
+    if {"genus_tax_key", "species_tax_key"}.issubset(taxonomy.columns):
+        genus_key = taxonomy["genus_tax_key"]
+        species_key = taxonomy["species_tax_key"]
+        species_has_genus = (
+            species_key.fillna("").str.split().str[0].eq(genus_key.fillna(""))
+        )
+        needs_genus_prefix = (
+            genus_key.notna() & species_key.notna() & ~species_has_genus
+        )
+        taxonomy.loc[needs_genus_prefix, "species_tax_key"] = (
+            genus_key[needs_genus_prefix] + " " + species_key[needs_genus_prefix]
+        )
+
+    return taxonomy
+
+
 def load_taxonomy(taxonomy_path: str) -> pd.DataFrame:
     """
     Load and parse a taxonomy file with taxon annotations.
 
-    Extracts taxonomic levels (pyhlum, family, genus, species) from a
-    semicolon-separated taxon string and adds them as separate columns to the DataFrame.
+    Extract taxonomic ranks from the semicolon-separated ``Taxon`` column and add
+    normalized taxonomy columns and keys to the DataFrame.
+
+    The extracted columns use the ``rank_tax`` naming scheme, for example
+    ``kingdom_tax``, ``phylum_tax``, ``genus_tax``, and ``species_tax``. For each
+    extracted column, a normalized ``*_key`` companion column is also created for
+    downstream matching.
 
     Parameters:
         taxonomy_path (str): Path to the taxonomy TSV file.
 
     Returns:
-        pd.DataFrame: DataFrame with original data plus extracted taxonomic columns.
-
-    Raises:
-        ValueError: If none of the taxonomy levels "family", "genus", or "species" are
-        present in the taxonomy file.
+        pd.DataFrame: DataFrame with the original columns plus extracted
+        ``*_tax`` columns and normalized ``*_tax_key`` columns for each extracted
+        rank.
     """
 
     taxonomy = pd.read_csv(taxonomy_path, sep="\t")
@@ -43,57 +93,79 @@ def load_taxonomy(taxonomy_path: str) -> pd.DataFrame:
     # Name the columns with the appropriate taxonomic levels
     taxonomy_split.columns = prefixes
     taxonomy_split = taxonomy_split.rename(
-        columns={"s": "species", "g": "genus", "f": "family", "p": "phylum"}
+        columns={
+            "s": "species_tax",
+            "g": "genus_tax",
+            "f": "family_tax",
+            "p": "phylum_tax",
+            "k": "kingdom_tax",
+        }
     )
 
     # Remove the prefixes from the taxon strings
-    taxonomy_split = taxonomy_split.applymap(
-        lambda x: x.split("__")[-1] if isinstance(x, str) else x
+    taxonomy_split = taxonomy_split.apply(
+        lambda col: col.map(lambda x: x.split("__")[-1] if isinstance(x, str) else x)
     )
-
-    # Replace any separators with a space
-    taxonomy_split = taxonomy_split.applymap(
-        lambda x: x.replace("-", " ").replace("_", " ") if isinstance(x, str) else x
-    )
-
-    # Add genus name to species if it is not already there
-    if {"genus", "species"}.issubset(taxonomy_split.columns):
-        genus = taxonomy_split["genus"]
-        species = taxonomy_split["species"]
-        species_has_genus = species.fillna("").str.split().str[0].eq(genus.fillna(""))
-        needs_genus_prefix = genus.notna() & species.notna() & ~species_has_genus
-        taxonomy_split.loc[needs_genus_prefix, "species"] = (
-            genus[needs_genus_prefix] + " " + species[needs_genus_prefix]
-        )
 
     cols_to_add = [
         col
-        for col in ["phylum", "family", "genus", "species"]
+        for col in [
+            "kingdom_tax",
+            "phylum_tax",
+            "family_tax",
+            "genus_tax",
+            "species_tax",
+        ]
         if col in taxonomy_split.columns
     ]
 
-    if not all(col in cols_to_add for col in ["family", "genus", "species"]):
-        raise ValueError(
-            'None of the taxonomy levels "family", "genus", or "species" are present. '
-            "Please check your taxonomy file."
-        )
-
     taxonomy = taxonomy.join(taxonomy_split[cols_to_add])
+
+    for col in cols_to_add:
+        taxonomy[f"{col}_key"] = taxonomy[col].map(normalize_taxon_key)
+
+    taxonomy = ensure_species_key_has_genus(taxonomy)
 
     return taxonomy
 
 
 def load_spore_data(spore_data_path) -> pd.DataFrame:
     """
-    Load spore volume data from the TSV file and preprocess it for annotation.
-    This function reads the spore data, replaces spaces with underscores in the
-    'names_to_use' and 'SporeType' columns to ensure consistent formatting for matching
-    with taxonomy data.
-    """
-    spore_data = pd.read_csv(spore_data_path, sep="\t")
+    Load and preprocess spore volume data for annotation.
 
-    for col in ["names_to_use", "SporeType"]:
-        spore_data[col] = spore_data[col].str.replace(" ", "_", regex=False)
+    The spore data columns used for matching are renamed to the ``rank_spd``
+    scheme so their origin remains explicit after merges:
+    ``phylum_spd``, ``family_spd``, ``genus_spd``, and ``species_spd``.
+    Normalized key columns are added as ``species_spd_key``, ``genus_spd_key``,
+    and ``family_spd_key``.
+
+    ``SporeType`` values are normalized by replacing spaces with underscores.
+
+    Parameters:
+        spore_data_path (str): Path to the spore volume TSV file.
+
+    Returns:
+        pd.DataFrame: Preprocessed spore data with renamed rank columns and
+        normalized key columns for matching.
+    """
+    spore_data = pd.read_csv(spore_data_path, sep="\t").rename(
+        columns={
+            "phylum": "phylum_spd",
+            "family": "family_spd",
+            "genus": "genus_spd",
+            "names_to_use": "species_spd",
+        }
+    )
+
+    spore_data["SporeType"] = spore_data["SporeType"].str.replace(" ", "_", regex=False)
+
+    for col, key_col in [
+        ("species_spd", "species_spd_key"),
+        ("genus_spd", "genus_spd_key"),
+        ("family_spd", "family_spd_key"),
+    ]:
+        if col in spore_data.columns:
+            spore_data[key_col] = spore_data[col].map(normalize_taxon_key)
 
     return spore_data
 
@@ -103,24 +175,24 @@ def add_spore_volume(taxonomy: pd.DataFrame, spore_data: pd.DataFrame) -> pd.Dat
     Annotate a taxonomy DataFrame with spore volume data.
 
     The annotation follows a hierarchical matching strategy:
-    1. Species-level: Direct string match using the species columns.
-    2. Genus-level: For unmatched entries, log-mean spore volume is computed per genus,
-       and mapped to matching genera.
-    3. Family-level: If genus-level data is still missing, the process is repeated
-       at the family level.
+    1. Species-level: Exact matching between ``species_tax_key`` and
+       ``species_spd_key``.
+    2. Genus-level: For unmatched fungal rows, compute the log-mean spore volume per
+       ``genus_spd_key`` and map it back to ``genus_tax_key``.
+    3. Family-level: If genus-level data is still missing, repeat the same process
+       with ``family_spd_key`` and ``family_tax_key``.
 
-    If no match is found, the volume remains `NaN` and the information column is set
-    to "no hit".
+    A spore match is only allowed for rows where ``kingdom_tax_key == "fungi"``.
 
     Parameters:
-        taxonomy (pd.DataFrame): The input DataFrame containing at least 'genus' and/or
-                                 'family', and optionally a 'species' column.
-        spore_data (pd.DataFrame): A DataFrame containing the spore volume data.
+        taxonomy (pd.DataFrame): Taxonomy DataFrame containing the ``*_tax`` and
+            ``*_tax_key`` columns needed for matching.
+        spore_data (pd.DataFrame): Spore volume DataFrame containing the
+            ``*_spd`` and ``*_spd_key`` columns used for matching.
 
     Returns:
-        pd.DataFrame: The input `taxonomy` DataFrame with added spore volume columns
-                      for each spore type and information columns denoting what level
-                      the spore data is derived from.
+        pd.DataFrame: The input ``taxonomy`` DataFrame with added spore volume,
+        matched taxon, and matching-level columns for each spore type.
     """
 
     for spore_type in [
@@ -133,38 +205,46 @@ def add_spore_volume(taxonomy: pd.DataFrame, spore_data: pd.DataFrame) -> pd.Dat
         volume_col = f"{spore_type.lower()}_volume"
         info_col = f"{spore_type.lower()}_matching_level"
 
-        taxonomy[taxon_col] = np.nan
-        taxonomy[volume_col] = np.nan
-        taxonomy[info_col] = np.nan
+        taxonomy[taxon_col] = pd.Series(np.nan, index=taxonomy.index, dtype="object")
+        taxonomy[volume_col] = pd.Series(np.nan, index=taxonomy.index, dtype="float64")
+        taxonomy[info_col] = pd.Series(np.nan, index=taxonomy.index, dtype="object")
 
         spore_type_filtered = spore_data[spore_data["SporeType"] == spore_type]
+        fungal_taxonomy_mask = taxonomy["kingdom_tax_key"].eq("fungi")
 
         # Species-level exact match
-        if "species" in taxonomy.columns:
-            species_map = spore_type_filtered.set_index("names_to_use")["SporeVolume"]
-            species_hits = taxonomy["species"].map(species_map)
-            mask = species_hits.notna()
-            taxonomy.loc[mask, volume_col] = species_hits[mask]
+        if "species_tax_key" in taxonomy.columns:
+            species_map = spore_type_filtered.set_index("species_spd_key")[
+                "SporeVolume"
+            ]
+            species_matches = taxonomy["species_tax_key"].map(species_map)
+            mask = species_matches.notna() & fungal_taxonomy_mask
+            taxonomy.loc[mask, volume_col] = species_matches[mask]
             taxonomy.loc[mask, info_col] = "species"
-            taxonomy.loc[mask, taxon_col] = taxonomy.loc[mask, "species"]
+            taxonomy.loc[mask, taxon_col] = taxonomy.loc[mask, "species_tax"]
 
         # Genus or family level fallback
         for rank in ["genus", "family"]:
-            if rank in taxonomy.columns:
+            rank_tax = f"{rank}_tax"
+            rank_tax_key = f"{rank}_tax_key"
+            rank_spd_key = f"{rank}_spd_key"
+            if rank_tax in taxonomy.columns and rank_tax_key in taxonomy.columns:
                 # Identify rows where volume is still missing
-                missing = taxonomy[volume_col].isna()
+                missing = taxonomy[volume_col].isna() & fungal_taxonomy_mask
                 # Get unique ranks (genus or family) for missing entries
-                ranks_to_check = taxonomy.loc[missing, rank].dropna().unique()
+                ranks_to_check = taxonomy.loc[missing, rank_tax_key].dropna().unique()
 
                 # Compute log-mean spore volume for each rank present in spore data
                 rank_means = (
-                    spore_type_filtered[spore_type_filtered[rank].isin(ranks_to_check)]
-                    .groupby(rank)["SporeVolume"]
+                    spore_type_filtered[
+                        spore_type_filtered[rank_spd_key].isin(ranks_to_check)
+                    ]
+                    .groupby(rank_spd_key)["SporeVolume"]
                     .apply(lambda x: 10 ** np.mean(np.log10(x)))
                 )
 
                 # Map the computed means back to the taxonomy for missing entries
-                rank_matches = taxonomy.loc[missing, rank].map(rank_means)
+                rank_matches = taxonomy.loc[missing, rank_tax_key].map(rank_means)
                 # Find where matches were successful
                 matched = rank_matches.notna()
 
@@ -172,47 +252,78 @@ def add_spore_volume(taxonomy: pd.DataFrame, spore_data: pd.DataFrame) -> pd.Dat
                 idx = rank_matches[matched].index
                 taxonomy.loc[idx, volume_col] = rank_matches[matched]
                 taxonomy.loc[idx, info_col] = rank
-                taxonomy.loc[idx, taxon_col] = taxonomy.loc[idx, rank]
+                taxonomy.loc[idx, taxon_col] = taxonomy.loc[idx, rank_tax]
 
     return taxonomy
 
 
-def handle_duplicates(df):
+def add_fungal_traits(taxonomy, fungal_traits):
     """
-    Handles duplicated IDs in the merged taxonomy with fungal traits.
+    Merge fungal trait annotations into the taxonomy table.
 
-    This function first removes exact duplicate rows. Then it removes duplicated rows
-    that originate because 'Caudospora' and 'Campanulospora' are genera present in
-    two phyla. For these rows the assigned phylum is checked to check if it should
-    be dropped otr not.
+    The fungal traits table is renamed to use explicit source-aware column names,
+    including ``phylum_ft`` and ``genus_ft`` with corresponding normalized key
+    columns. Traits are merged to taxonomy on genus using
+    ``genus_tax_key`` and ``genus_ft_key``. After merging, rows are retained only
+    when the phylum keys also agree.
 
     Parameters:
-        df (pd.DataFrame): A pandas DataFrame of taxonomy merged with fungal trait data.
+        taxonomy (pd.DataFrame): Taxonomy DataFrame containing taxonomy-derived
+            columns such as ``genus_tax_key`` and ``phylum_tax_key``.
+        fungal_traits (pd.DataFrame): Raw fungal traits DataFrame.
 
     Returns:
-        pd.DataFrame: The cleaned DataFrame with appropriate duplicates removed.
+        pd.DataFrame: Merged taxonomy and fungal traits table with phylum-mismatched
+        rows removed and exact duplicate rows dropped.
     """
-    df = df.drop_duplicates()
-
-    dup_ids = df[df["Feature ID"].duplicated(keep=False)]
-    for feature_id, group in dup_ids.groupby("Feature ID"):
-        for idx, row in group.iterrows():
-            if row["Phylum"] != row["phylum"]:
-                df = df.drop(index=idx)
-
-    return df
-
-
-def add_fungal_traits(taxonomy, fungal_traits):
-    merged = pd.merge(
-        taxonomy, fungal_traits, left_on="genus", right_on="GENUS", how="left"
+    fungal_traits = fungal_traits.rename(
+        columns={
+            "Phylum": "phylum_ft",
+            "GENUS": "genus_ft",
+        }
     )
-    unique_merged = handle_duplicates(merged)
+    fungal_traits["genus_ft_key"] = fungal_traits["genus_ft"].map(normalize_taxon_key)
+    fungal_traits["phylum_ft_key"] = fungal_traits["phylum_ft"].map(normalize_taxon_key)
 
-    return unique_merged
+    merged = pd.merge(
+        taxonomy,
+        fungal_traits,
+        left_on="genus_tax_key",
+        right_on="genus_ft_key",
+        how="left",
+    )
+
+    merged = merged[
+        merged["phylum_ft_key"].isna()
+        | merged["phylum_tax_key"].eq(merged["phylum_ft_key"])
+    ]
+
+    # Remove completely duplicate rows
+    merged = merged.drop_duplicates()
+
+    return merged
 
 
 def annotate(taxonomy: TSVTaxonomyDirectoryFormat) -> rachis.Metadata:
+    """
+    Annotate a QIIME 2 taxonomy artifact with fungal traits and spore volumes.
+
+    The workflow loads taxonomy, fungal trait, and spore datasets; conditionally
+    performs fungal trait merging and spore volume matching based on the
+    available taxonomy ranks; drops intermediate matching columns; and returns
+    the result as ``rachis.Metadata``.
+
+    Parameters:
+        taxonomy (TSVTaxonomyDirectoryFormat): QIIME 2 taxonomy directory format
+            containing ``taxonomy.tsv``.
+
+    Returns:
+        rachis.Metadata: Annotated metadata table ready for downstream use.
+
+    Raises:
+        ValueError: If the taxonomy does not contain enough rank information to
+        run either fungal trait annotation or spore volume annotation.
+    """
     # Load taxonomy, spore data, and fungal traits
     taxonomy = load_taxonomy(os.path.join(taxonomy.path, "taxonomy.tsv"))
     spore_data = load_spore_data(
@@ -228,23 +339,46 @@ def annotate(taxonomy: TSVTaxonomyDirectoryFormat) -> rachis.Metadata:
     )
 
     # Add spore volume data and fungal traits
-    if "genus" in taxonomy.columns:
+    can_add_fungal_traits = {"genus_tax", "phylum_tax"}.issubset(taxonomy.columns)
+    can_add_spore_volume = "kingdom_tax" in taxonomy.columns and any(
+        col in taxonomy.columns for col in ["species_tax", "genus_tax", "family_tax"]
+    )
+
+    if can_add_fungal_traits:
         taxonomy = add_fungal_traits(taxonomy, fungal_traits)
-    taxonomy = add_spore_volume(taxonomy, spore_data)
+
+    if can_add_spore_volume:
+        taxonomy = add_spore_volume(taxonomy, spore_data)
+
+    if not can_add_fungal_traits and not can_add_spore_volume:
+        raise ValueError(
+            "Annotation could not be performed. Fungal traits annotations require both "
+            "'genus' and 'phylum' ranks in the taxonomy. Spore volume annotation "
+            "requires 'kingdom' and at least one of 'species', 'genus', or 'family' "
+            "ranks."
+        )
 
     # Drop columns that are not needed for the final output
     taxonomy.drop(
         columns=[
-            "GENUS",
+            "genus_tax",
             "COMMENT on genus",
             "jrk_template",
-            "Phylum",
+            "phylum_ft",
+            "Family",
             "Class",
             "Order",
-            "Family",
-            "phylum",
-            "species",
-            "family",
+            "phylum_tax",
+            "phylum_tax_key",
+            "kingdom_tax",
+            "kingdom_tax_key",
+            "species_tax",
+            "species_tax_key",
+            "family_tax",
+            "family_tax_key",
+            "genus_tax_key",
+            "genus_ft_key",
+            "phylum_ft_key",
         ],
         errors="ignore",
         inplace=True,
@@ -252,7 +386,7 @@ def annotate(taxonomy: TSVTaxonomyDirectoryFormat) -> rachis.Metadata:
 
     # To adhere to the qiime metadata format
     taxonomy.rename(
-        columns={"Feature ID": "feature-id", "genus": "fungal_traits_genus"},
+        columns={"Feature ID": "feature-id", "genus_ft": "fungal_traits_genus"},
         inplace=True,
     )
     taxonomy.columns = taxonomy.columns.str.lower()

@@ -1,0 +1,2 @@
+Feature ID	Taxon	phylum_tax	family_tax	genus_tax	species_tax	phylum_tax_key	family_tax_key	genus_tax_key	species_tax_key
+feat1	p__Basidiomycota;f__Amanitaceae;g__Amanita;s__muscaria	Basidiomycota	Amanitaceae	Amanita	muscaria	basidiomycota	amanitaceae	amanita	amanita muscaria
