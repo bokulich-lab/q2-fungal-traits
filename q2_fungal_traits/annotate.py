@@ -391,5 +391,6 @@ def annotate(taxonomy: TSVTaxonomyDirectoryFormat) -> rachis.Metadata:
     )
     taxonomy.columns = taxonomy.columns.str.lower()
     taxonomy.set_index("feature-id", inplace=True)
+    taxonomy.index = taxonomy.index.astype(str)
 
     return rachis.Metadata(taxonomy)
