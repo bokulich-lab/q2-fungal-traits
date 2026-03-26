@@ -7,6 +7,7 @@
 # ----------------------------------------------------------------------------
 from importlib.resources import files
 
+import numpy as np
 import pandas as pd
 import rachis
 from q2_types.feature_data import TSVTaxonomyDirectoryFormat
@@ -146,6 +147,51 @@ class TestAnnotate(TestPluginBase):
             sep="\t",
         )
         pd.testing.assert_frame_equal(obs.astype(str), exp.astype(str))
+
+    def test_add_spore_volume_manual_calculation(self):
+        taxonomy = load_taxonomy(
+            self.get_data_path("taxonomy_spore_volume_species_genus_family.tsv")
+        )
+        spore_data = load_spore_data(
+            str(files("q2_fungal_traits.assets").joinpath("Spore_data_12Nov21.tsv"))
+        )
+
+        obs = add_spore_volume(taxonomy, spore_data)
+
+        meiospores = spore_data[spore_data["SporeType"] == "Meiospores"]
+
+        species_expected = meiospores.loc[
+            meiospores["species_spd_key"].eq("datroniella minuta"), "SporeVolume"
+        ].iloc[0]
+        genus_expected = 10 ** np.mean(
+            np.log10(
+                meiospores.loc[
+                    meiospores["genus_spd_key"].eq("datronia"), "SporeVolume"
+                ]
+            )
+        )
+        family_expected = 10 ** np.mean(
+            np.log10(
+                meiospores.loc[
+                    meiospores["family_spd_key"].eq("polyporaceae"), "SporeVolume"
+                ]
+            )
+        )
+
+        species_row = obs.set_index("Feature ID").loc["species-hit"]
+        self.assertEqual(species_row["meiospores_matching_level"], "species")
+        self.assertEqual(species_row["meiospores_taxon"], "Datroniella_minuta")
+        self.assertAlmostEqual(species_row["meiospores_volume"], species_expected)
+
+        genus_row = obs.set_index("Feature ID").loc["genus-hit"]
+        self.assertEqual(genus_row["meiospores_matching_level"], "genus")
+        self.assertEqual(genus_row["meiospores_taxon"], "Datronia")
+        self.assertAlmostEqual(genus_row["meiospores_volume"], genus_expected)
+
+        family_row = obs.set_index("Feature ID").loc["family-hit"]
+        self.assertEqual(family_row["meiospores_matching_level"], "family")
+        self.assertEqual(family_row["meiospores_taxon"], "Polyporaceae")
+        self.assertAlmostEqual(family_row["meiospores_volume"], family_expected)
 
     def test_annotate(self):
         obs = annotate(
