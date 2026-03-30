@@ -288,18 +288,10 @@ def add_fungal_traits(taxonomy, fungal_traits):
     merged = pd.merge(
         taxonomy,
         fungal_traits,
-        left_on="genus_tax_key",
-        right_on="genus_ft_key",
+        left_on=["genus_tax_key", "phylum_tax_key"],
+        right_on=["genus_ft_key", "phylum_ft_key"],
         how="left",
     )
-
-    merged = merged[
-        merged["phylum_ft_key"].isna()
-        | merged["phylum_tax_key"].eq(merged["phylum_ft_key"])
-    ]
-
-    # Remove completely duplicate rows
-    merged = merged.drop_duplicates()
 
     return merged
 
