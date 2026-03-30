@@ -3286,7 +3286,6 @@ jrk07867	Ascomycota	Dothideomycetes	Patellariales	Patellariaceae	Schrakia		wood_
 jrk08446	Ascomycota	Dothideomycetes	Patellariales	Patellariaceae	Stratisporella		lichenized			no_endophytic_capacity				non-aquatic			thallus_photosynthetic	apothecium_(hymenium_on_surface)	smooth
 jrk09083	Ascomycota	Dothideomycetes	Patellariales	Patellariaceae	Tryblidaria		wood_saprotroph			no_endophytic_capacity		wood		non-aquatic			filamentous_mycelium	apothecium_(hymenium_on_surface)	smooth
 jrk02819	Ascomycota	Dothideomycetes	Phaeotrichales	Phaeotrichaceae	Echinoascotheca		unspecified_saprotroph										filamentous_mycelium
-jrk02819	Ascomycota	Dothideomycetes	Phaeotrichales	Phaeotrichaceae	Echinoascotheca		unspecified_saprotroph										filamentous_mycelium
 jrk06449	Ascomycota	Dothideomycetes	Phaeotrichales	Phaeotrichaceae	Phaeotrichum		unspecified_saprotroph		dung_saprotroph_some_species					non-aquatic			filamentous_mycelium	cleistothecium	closed
 jrk08976	Ascomycota	Dothideomycetes	Phaeotrichales	Phaeotrichaceae	Trichodelitschia		dung_saprotroph					dung		non-aquatic			filamentous_mycelium	perithecium_(hymenium_hidden,_narrow_opening)	closed
 jrk00083	Ascomycota	Dothideomycetes	Pleosporales	Acrocalymmaceae	Acrocalymma		wood_saprotroph					wood		partly_freshwater_(partly_non-aquatic)			filamentous_mycelium
@@ -4738,7 +4737,6 @@ jrk09479	Ascomycota	Lecanoromycetes	Lecanorales	Cladoniaceae	Xyleborus		licheniz
 jrk09771	Ascomycota	Lecanoromycetes	Lecanorales	Crocyniaceae	Crocynia		lichenized							non-aquatic			thallus_photosynthetic	none	none
 jrk03608	Ascomycota	Lecanoromycetes	Lecanorales	Gypsoplacaceae	Gypsoplaca		lichenized							non-aquatic			thallus_photosynthetic	apothecium_(hymenium_on_surface)	smooth			chlorococcoid
 jrk03630	Ascomycota	Lecanoromycetes	Lecanorales	Haematommataceae	Haematomma		lichenized							non-aquatic			thallus_photosynthetic	apothecium_(hymenium_on_surface)	smooth			chlorococcoid
-jrk00124	Ascomycota	Lecanoromycetes	Lecanorales	Lecanoraceae	Adelolecia		lichenized							non-aquatic			thallus_photosynthetic	apothecium_(hymenium_on_surface)	smooth			chlorococcoid
 jrk00124	Ascomycota	Lecanoromycetes	Lecanorales	Lecanoraceae	Adelolecia		lichenized							non-aquatic			thallus_photosynthetic	apothecium_(hymenium_on_surface)	smooth			chlorococcoid
 jrk00287	Ascomycota	Lecanoromycetes	Lecanorales	Lecanoraceae	Ameliella		lichenized							non-aquatic			thallus_photosynthetic	apothecium_(hymenium_on_surface)	smooth			chlorococcoid
 jrk09773	Ascomycota	Lecanoromycetes	Lecanorales	Lecanoraceae	Arctopeltis		lichenized							non-aquatic			thallus_photosynthetic	apothecium_(hymenium_on_surface)	smooth			chlorococcoid
@@ -7089,7 +7087,6 @@ jrk02404	Ascomycota	Sordariomycetes	Microascales	Ceratocystidaceae	Davidsoniella
 jrk02910	Ascomycota	Sordariomycetes	Microascales	Ceratocystidaceae	Endoconidiophora		plant_pathogen	wood_saprotroph			leaf/fruit/seed_pathogen	wood,leaf/fruit/seed	blue-staining	non-aquatic	arthropod-associated	Pinaceae	filamentous_mycelium	perithecium_(hymenium_hidden,_narrow_opening)	closed
 jrk03939	Ascomycota	Sordariomycetes	Microascales	Ceratocystidaceae	Huntiella		plant_pathogen	wood_saprotroph			leaf/fruit/seed_pathogen	wood,leaf/fruit/seed	blue-staining	non-aquatic	arthropod-associated		filamentous_mycelium	perithecium_(hymenium_hidden,_narrow_opening)	closed
 jrk05081	Ascomycota	Sordariomycetes	Microascales	Ceratocystidaceae	Meredithiella		plant_pathogen	arthropod-associated			wood_pathogen	wood	soft_rot	non-aquatic	arthropod-associated	Corthylus	filamentous_mycelium	cleistothecium_(closed,_spherical)	closed
-jrk10035	Ascomycota	Sordariomycetes	Microascales	Ceratocystidaceae	Phialophoropsis		plant_pathogen	arthropod-associated			wood_pathogen	wood	blue-staining	non-aquatic	arthropod_ectosymbiont	Ambrosia_beetles_(Coleoptera:_Curculionidae)	filamentous_mycelium	perithecium_(hymenium_hidden,_narrow_opening)	closed
 jrk10035	Ascomycota	Sordariomycetes	Microascales	Ceratocystidaceae	Phialophoropsis		plant_pathogen	arthropod-associated			wood_pathogen	wood	blue-staining	non-aquatic	arthropod_ectosymbiont	Ambrosia_beetles_(Coleoptera:_Curculionidae)	filamentous_mycelium	perithecium_(hymenium_hidden,_narrow_opening)	closed
 jrk08030	Ascomycota	Sordariomycetes	Microascales	Ceratocystidaceae	Seychellomyces		soil_saprotroph					soil		non-aquatic			filamentous_mycelium	none	none
 jrk08806	Ascomycota	Sordariomycetes	Microascales	Ceratocystidaceae	Thielaviopsis		plant_pathogen	wood_saprotroph			root_pathogen	wood,leaf/fruit/seed,roots		non-aquatic			filamentous_mycelium	perithecium_(hymenium_hidden,_narrow_opening)	closed
