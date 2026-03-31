@@ -39,6 +39,13 @@ class TestAnnotate(TestPluginBase):
         )
         pd.testing.assert_frame_equal(obs, exp)
 
+    def test_load_taxonomy_whitespaces(self):
+        obs = load_taxonomy(self.get_data_path("taxonomy_whitespaces.tsv"))
+        exp = pd.read_csv(
+            self.get_data_path("load_taxonomy_whitespaces_exp.tsv"), sep="\t"
+        )
+        pd.testing.assert_frame_equal(obs, exp)
+
     def test_normalize_taxon_key(self):
         self.assertEqual(
             normalize_taxon_key("  Amanita_citrina-var  "), "amanita citrina var"

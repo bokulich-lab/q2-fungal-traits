@@ -87,6 +87,9 @@ def load_taxonomy(taxonomy_path: str) -> pd.DataFrame:
     # Split the taxon string into separate columns
     taxonomy_split = taxonomy["Taxon"].str.split(";", expand=True)
 
+    # Strip whitespaces
+    taxonomy_split = taxonomy_split.apply(lambda col: col.str.strip())
+
     # Extract taxonomic prefixes from a fully annotated row
     prefixes = taxonomy_split.dropna().iloc[0].map(lambda x: x.split("__")[0])
 
