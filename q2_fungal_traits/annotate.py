@@ -105,21 +105,18 @@ def load_taxonomy(taxonomy_path: str) -> pd.DataFrame:
         }
     )
 
-    # Remove the prefixes from the taxon strings
+    # Remove the prefixes from the taxon strings and convert explicit empty
+    # ranks such as ``f__`` to missing values.
     taxonomy_split = taxonomy_split.apply(
         lambda col: col.map(lambda x: x.split("__")[-1] if isinstance(x, str) else x)
     )
+    taxonomy_split = taxonomy_split.mask(taxonomy_split.eq(""), np.nan)
 
+    rank_cols = ["kingdom_tax", "phylum_tax", "family_tax", "genus_tax", "species_tax"]
     cols_to_add = [
         col
-        for col in [
-            "kingdom_tax",
-            "phylum_tax",
-            "family_tax",
-            "genus_tax",
-            "species_tax",
-        ]
-        if col in taxonomy_split.columns
+        for col in rank_cols
+        if col in taxonomy_split.columns and taxonomy_split[col].notna().any()
     ]
 
     taxonomy = taxonomy.join(taxonomy_split[cols_to_add])
