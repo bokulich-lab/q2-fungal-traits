@@ -57,6 +57,12 @@ class TestAnnotate(TestPluginBase):
         self.assertEqual(
             normalize_taxon_key("  Amanita_citrina-var  "), "amanita citrina var"
         )
+        self.assertEqual(
+            normalize_taxon_key("[Amanita]_citrina[var]"), "amanita citrinavar"
+        )
+        self.assertEqual(
+            normalize_taxon_key("Amanita    citrina   var"), "amanita citrina var"
+        )
         self.assertTrue(pd.isna(normalize_taxon_key("")))
         self.assertTrue(pd.isna(normalize_taxon_key("   ")))
 

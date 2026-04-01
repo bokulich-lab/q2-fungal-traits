@@ -19,6 +19,7 @@ def normalize_taxon_key(value):
     if not isinstance(value, str):
         return value
 
+    value = value.replace("[", "").replace("]", "")
     value = value.replace("-", " ").replace("_", " ")
     value = " ".join(value.split())
 
