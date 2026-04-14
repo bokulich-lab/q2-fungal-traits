@@ -61,6 +61,8 @@ class TestAnnotate(TestPluginBase):
             self.get_data_path("load_taxonomy_shallow_first_deep_later_rows_exp.tsv"),
             sep="\t",
         )
+        obs = obs.where(pd.notna(obs), np.nan)
+        exp = exp.where(pd.notna(exp), np.nan)
         pd.testing.assert_frame_equal(obs, exp)
 
     def test_normalize_taxon_key(self):
