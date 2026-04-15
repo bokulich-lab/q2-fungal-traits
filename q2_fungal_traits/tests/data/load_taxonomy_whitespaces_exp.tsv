@@ -1,0 +1,2 @@
+Feature ID	Taxon	kingdom_tax	phylum_tax	family_tax	genus_tax	species_tax	kingdom_tax_key	phylum_tax_key	family_tax_key	genus_tax_key	species_tax_key
+1	k__Fungi; p__Basidiomycota; c__Agaricomycetes; o__Polyporales; f__Polyporaceae; g__Datroniella; s__Datroniella_minuta	Fungi	Basidiomycota	Polyporaceae	Datroniella	Datroniella_minuta	fungi	basidiomycota	polyporaceae	datroniella	datroniella minuta

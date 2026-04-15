@@ -1,0 +1,4 @@
+Feature ID	Taxon	kingdom_tax	phylum_tax	family_tax	genus_tax	species_tax	kingdom_tax_key	phylum_tax_key	family_tax_key	genus_tax_key	species_tax_key
+a	k__Fungi;p__Basidiomycota;c__Agaricomycetes;o__Polyporales	Fungi	Basidiomycota				fungi	basidiomycota
+b	k__Fungi;p__Basidiomycota;c__Agaricomycetes;o__Polyporales;f__Polyporaceae;g__Datronia;s__Datronia_sp	Fungi	Basidiomycota	Polyporaceae	Datronia	Datronia_sp	fungi	basidiomycota	polyporaceae	datronia	datronia sp
+c	k__Fungi;p__Glomeromycota;c__Glomeromycetes;o__Glomerales;f__Glomeraceae;g__Glomus;s__Glomus_tetrastratosum	Fungi	Glomeromycota	Glomeraceae	Glomus	Glomus_tetrastratosum	fungi	glomeromycota	glomeraceae	glomus	glomus tetrastratosum

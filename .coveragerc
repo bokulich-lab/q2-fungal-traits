@@ -1,5 +1,5 @@
 [run]
-source=q2_amrfinderplus
+source=q2_fungal_traits
 branch = True
 omit =
     **/test_*.py

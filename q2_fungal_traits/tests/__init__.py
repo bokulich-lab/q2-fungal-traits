@@ -1,5 +1,5 @@
 # ----------------------------------------------------------------------------
-# Copyright (c) 2025, Vinzent Risch.
+# Copyright (c) 2026, Bokulich Laboratories.
 #
 # Distributed under the terms of the Modified BSD License.
 #
