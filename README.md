@@ -6,33 +6,76 @@ The plugin provides an **`annotate` action** that generates a metadata table con
 
 ---
 
-# What the plugin does
+# How annotation works
 
 The plugin links taxonomic assignments to known fungal trait datasets and produces a metadata table with:
 
 - ecological fungal lifestyle traits
 - estimated spore volumes
 
-Trait and spore annotations are inferred from the taxonomy hierarchy.
+Trait and spore annotations are inferred from the taxonomy hierarchy, but the two
+reference datasets are matched differently.
 
-### Spore volume estimation
+### Fungal trait matching
 
-Spore volume annotations are assigned hierarchically:
+- Fungal trait annotations are only attempted when both **phylum** and **genus**
+  are present in the taxonomy input.
+- The FungalTraits dataset is matched on **genus + phylum** after normalization.
+- If either genus or phylum is missing, fungal trait annotation is skipped for that
+  feature.
+
+### Spore volume matching
+
+- Spore volume annotations are only attempted for rows where the taxonomy contains
+  **kingdom** and the kingdom normalizes to **Fungi**.
+- The spore dataset is then matched hierarchically using the available taxonomic
+  ranks.
 
 1. **Species level**
    If a species match exists in the spore dataset, that value is used.
 
 2. **Genus level fallback**
-   If no species-level match exists, the **geometric mean of spore volumes within the genus** is used.
+   If no species-level match exists, the **geometric mean of spore volumes within
+   the genus** is used.
 
 3. **Family level fallback**
-   If no genus-level match exists, the **geometric mean of spore volumes within the family** is used.
+   If no genus-level match exists, the **geometric mean of spore volumes within
+   the family** is used.
 
-### Trait annotation behavior
+- The output records whether each spore value came from a **species**, **genus**,
+  or **family** match.
 
-- Trait annotations are assigned **at the genus level**.
-- If genus-level taxonomy is missing, **trait annotation is skipped**, and only spore
-  volume annotation is performed.
+### Taxonomy requirements
+
+- Fungal trait annotation requires **genus + phylum**.
+- Spore volume annotation requires **kingdom** and at least one of **species**,
+  **genus**, or **family**.
+- If only one of these two annotation paths can run, the plugin still returns the
+  partial annotation.
+
+### Taxonomy string format and normalization
+
+The input taxonomy is expected in standard QIIME 2 semicolon-separated format, for
+example:
+
+`k__Fungi;p__Basidiomycota;c__Agaricomycetes;o__Polyporales;f__Polyporaceae;g__Datroniella;s__Datroniella_minuta`
+
+The code extracts taxonomic ranks from the prefixed fields and normalizes matching
+keys so the input taxonomy can align with the reference datasets more reliably.
+The current normalization behavior includes:
+
+- surrounding whitespace around each rank is stripped
+- explicit empty ranks such as `f__` are treated as missing values
+- square brackets `[` and `]` are removed
+- underscores `_` and hyphens `-` are converted to spaces
+- repeated internal whitespace is collapsed
+- matching is case-insensitive via case folding
+- if a normalized species string does not already start with the normalized genus,
+  the genus name is prepended before species-level matching so matching uses a
+  consistent `Genus species` form
+
+These normalized keys are used internally for matching only; the original taxonomy
+string is retained in the output metadata.
 
 ---
 
