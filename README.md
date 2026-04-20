@@ -170,29 +170,24 @@ The `annotate` action produces a metadata table where each row corresponds to a 
 | multinucleate_asexual_spores_volume | Estimated volume of multinucleate asexual spores. |
 | multinucleate_asexual_spores_matching_level | Taxonomic level used to determine multinucleate asexual spore volume (species, genus, or family). |
 
-# Handling of duplicated genera in the fungal trait dataset
+# Handling of duplicated entries in the fungal trait dataset
 
-Several inconsistencies exist in the original fungal trait dataset. These are handled during annotation.
+Three rows in the fungal traits dataset were exact duplicates and were removed.
 
-### Completely duplicated rows
+Removed rows:
 
-Three rows in the dataset are exact duplicates.
-These are removed automatically if encountered.
+`jrk02819 | Ascomycota | Dothideomycetes | Phaeotrichales | Phaeotrichaceae | Echinoascotheca | unspecified_saprotroph | filamentous_mycelium`
 
-### Duplicate genus with incomplete data
+`jrk00124 | Ascomycota | Lecanoromycetes | Lecanorales | Lecanoraceae | Adelolecia | lichenized | non-aquatic | thallus_photosynthetic | apothecium_(hymenium_on_surface) | smooth | chlorococcoid`
+
+`jrk10035 | Ascomycota | Sordariomycetes | Microascales | Ceratocystidaceae | Phialophoropsis | plant_pathogen | arthropod-associated | wood_pathogen | wood | blue-staining | non-aquatic | arthropod_ectosymbiont | Ambrosia_beetles_(Coleoptera:Curculionidae) | filamentous_mycelium | perithecium(hymenium_hidden,_narrow_opening) | closed`
 
 One genus entry was duplicated with differing completeness.
 The less complete row was removed.
 
 Removed row:
 
-jrk00561 | Ascomycota | Dothideomycetes | Dothideomycetes order incertae sedis | Paranectriellaceae | Paranectriella |   | litter_saprotroph |   |   | no_endophytic_capacity |   | leaf/fruit/seed |   | non-aquatic |   |   | filamentous_mycelium
-
-### Genera present in multiple families
-
-The genera Campanulospora and Caudospora appear in **two different families** in the
-dataset. To resolve this ambiguity, the plugin matches traits using **both genus and phylum**
-for these genera.
+`jrk00561 | Ascomycota | Dothideomycetes | Dothideomycetes order incertae sedis | Paranectriellaceae | Paranectriella |   | litter_saprotroph |   |   | no_endophytic_capacity |   | leaf/fruit/seed |   | non-aquatic |   |   | filamentous_mycelium`
 
 ---
 
