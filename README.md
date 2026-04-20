@@ -77,12 +77,12 @@ qiime fungal-traits annotate \
 
 The metadata output can be examined in the browser:
 
-```bash:
+```bash
 qiime metadata tabulate \
   --m-input-file fungal_traits.qza \
   --o-visualization fungal_traits.qzv
 ```
-```bash:
+```bash
 qiime tools view fungal_traits.qzv
 ```
 
