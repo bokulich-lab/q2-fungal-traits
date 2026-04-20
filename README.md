@@ -20,14 +20,14 @@ reference datasets are matched differently.
 
 - Fungal trait annotations are only attempted when both **phylum** and **genus**
   are present in the taxonomy input.
-- The FungalTraits dataset is matched on **genus + phylum** after normalization.
+- The FungalTraits dataset is matched on **genus + phylum**.
 - If either genus or phylum is missing, fungal trait annotation is skipped for that
   feature.
 
 ### Spore volume matching
 
 - Spore volume annotations are only attempted for rows where the taxonomy contains
-  **kingdom** and the kingdom normalizes to **Fungi**.
+  **kingdom** and the kingdom is **Fungi**.
 - The spore dataset is then matched hierarchically using the available taxonomic
   ranks.
 
