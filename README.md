@@ -6,6 +6,11 @@ The plugin provides an **`annotate` action** that generates a metadata table con
 
 ---
 
+# Installation instructions
+For installation instructions head to the [QIIME 2 Library](https://library.qiime2.org/plugins/bokulich-lab/q2-fungal-triats).
+
+---
+
 # How annotation works
 
 The plugin links taxonomic assignments to known fungal trait datasets and produces a metadata table with:
@@ -79,7 +84,6 @@ string is retained in the output metadata.
 
 ---
 
-
 # Data sources
 
 The annotations rely on two curated fungal datasets.
@@ -110,7 +114,6 @@ This dataset provides measured spore dimensions for ~30000 fungal species.
 The plugin provides a single action: `annotate`.
 
 This action takes taxonomic assignments as input and produces a metadata table with fungal trait annotations and spore volume estimates.
-
 
 ```bash
 qiime fungal-traits annotate \
