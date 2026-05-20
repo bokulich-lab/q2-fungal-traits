@@ -3,7 +3,7 @@ channels:
 - conda-forge
 - bioconda
 dependencies:
-  - qiime2-amplicon
+  - rachis-tiny
   - pip
   - pip:
      - "q2-fungal-traits@git+https://github.com/bokulich-lab/q2-fungal-traits.git"
