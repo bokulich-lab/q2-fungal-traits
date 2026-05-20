@@ -7,7 +7,7 @@ The plugin provides an **`annotate` action** that generates a metadata table con
 ---
 
 # Installation instructions
-For installation instructions head to the [QIIME 2 Library](https://library.qiime2.org/plugins/bokulich-lab/q2-fungal-triats).
+For installation instructions head to the [QIIME 2 Library](https://library.qiime2.org/plugins/bokulich-lab/q2-fungal-traits).
 
 ---
 
