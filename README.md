@@ -199,7 +199,7 @@ Removed row:
 ---
 ### Cite the plugin
 
-If you want to cite out plugin please Cite:
+If you want to cite the plugin please Cite:
 
 Our pre-print - doi and link TBD
 
