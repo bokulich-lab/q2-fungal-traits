@@ -103,6 +103,10 @@ fruit body type.
 
 Spore volume estimates are derived from:
 
+Aguilar-Trigueros, C.A., Krah, F.-S., Cornwell, W.K., Zanne, A.E., Abrego, N., Anderson, I.C. et al. (2023) Symbiotic status alters fungal eco-evolutionary offspring trajectories. Ecology Letters, 26, 1523–1534. https://doi.org/10.1111/ele.14271
+
+And the processing was done acording to:
+
 Abrego, N., Furneaux, B., Hardwick, B. et al. Airborne DNA reveals predictable spatial and seasonal dynamics of fungi. Nature 631, 835–842 (2024). https://doi.org/10.1038/s41586-024-07658-9
 
 This dataset provides measured spore dimensions for ~30000 fungal species.
@@ -191,6 +195,18 @@ The less complete row was removed.
 Removed row:
 
 `jrk00561 | Ascomycota | Dothideomycetes | Dothideomycetes order incertae sedis | Paranectriellaceae | Paranectriella |   | litter_saprotroph |   |   | no_endophytic_capacity |   | leaf/fruit/seed |   | non-aquatic |   |   | filamentous_mycelium`
+
+---
+### Cite the plugin
+
+If you want to cite out plugin please Cite:
+
+Our pre-print - doi and link TBD
+
+Põlme, S., Abarenkov, K., Henrik Nilsson, R. et al. FungalTraits: a user-friendly traits database of fungi and fungus-like stramenopiles. Fungal Diversity 105, 1–16 (2020). https://doi.org/10.1007/s13225-020-00466-2
+
+Aguilar-Trigueros, C.A., Krah, F.-S., Cornwell, W.K., Zanne, A.E., Abrego, N., Anderson, I.C. et al. (2023) Symbiotic status alters fungal eco-evolutionary offspring trajectories. Ecology Letters, 26, 1523–1534. https://doi.org/10.1111/ele.14271
+
 
 ---
 
