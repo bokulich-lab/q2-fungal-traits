@@ -50,5 +50,9 @@ plugin.methods.register_function(
         "was used, so it is clear whether a value came from a species, genus, or "
         "family-level match."
     ),
-    citations=[citations["polme2020fungaltraits"], citations["abrego2024airborne"]],
+    citations=[
+        citations["polme2020fungaltraits"],
+        citations["abrego2024airborne"],
+        citations["aguilar2023symbiotic"],
+    ],
 )
