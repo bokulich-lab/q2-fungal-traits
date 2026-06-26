@@ -24,7 +24,7 @@ plugin = Plugin(
         "traits and spore volume information."
     ),
     short_description="Lifestyle traits annotation of fungal taxonomies.",
-    citations=[],
+    citations=[citations['Lavrinienko2026']],
 )
 
 plugin.methods.register_function(
