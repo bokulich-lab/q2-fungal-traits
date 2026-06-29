@@ -1,3 +1,4 @@
+exclude: (^|/)data/
 repos:
   - repo: https://github.com/pre-commit/pre-commit-hooks
     rev: v2.3.0
@@ -14,7 +15,7 @@ repos:
           - black
         files: ^(.+)(?<!\_version)\.py$
   - repo: https://github.com/psf/black
-    rev: 23.12.1
+    rev: 25.1.0
     hooks:
       - id: black
         args:
@@ -22,27 +23,10 @@ repos:
           - --quiet
         files: ^(.+)(?<!\_version)\.py$
   - repo: https://github.com/PyCQA/flake8
-    rev: 4.0.1
+    rev: 7.1.1
     hooks:
       - id: flake8
         additional_dependencies:
-          - pycodestyle==2.8.0
-          - pyflakes==2.4.0
-          - pydocstyle==6.1.1
-          - flake8-comprehensions==3.8.0
-          - flake8-noqa==1.2.1
-          - mccabe==0.6.1
+          - flake8-comprehensions==3.15.0
+          - flake8-noqa==1.4.0
         files: ^(.+)(?<!\_version)\.py$
-#  - repo: local
-#    hooks:
-#      - id: pytest
-#        name: pytest
-#        language: python
-#        types:
-#          - python
-#        pass_filenames: false
-#        entry: make test-cov
-#        additional_dependencies:
-#          - coverage
-#          - pytest
-#        stages: [ push ]
