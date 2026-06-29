@@ -201,7 +201,7 @@ Removed row:
 
 If you want to cite the plugin please cite:
 
-Our pre-print - doi and link TBD
+Lavrinienko, A., Risch, V., Tang, C., Meyer, A., Flörl, L., Bokulich, N.A. 2026. Ecological inference and contaminant detection from fungal microbiome data with q2-fungal-traits. BioRxiv https://doi.org/10.64898/2026.06.17.732913 
 
 Põlme, S., Abarenkov, K., Henrik Nilsson, R. et al. FungalTraits: a user-friendly traits database of fungi and fungus-like stramenopiles. Fungal Diversity 105, 1–16 (2020). https://doi.org/10.1007/s13225-020-00466-2
 
