@@ -177,7 +177,7 @@ The `annotate` action produces a metadata table where each row corresponds to a 
 | multinucleate_asexual_spores_volume | Estimated volume of multinucleate asexual spores. |
 | multinucleate_asexual_spores_matching_level | Taxonomic level used to determine multinucleate asexual spore volume (species, genus, or family). |
 
-# Handling of duplicated entries in the fungal trait dataset
+# Changes to the original fungal trait dataset
 
 Three rows in the fungal traits dataset were exact duplicates and were removed.
 
@@ -195,6 +195,8 @@ The less complete row was removed.
 Removed row:
 
 `jrk00561 | Ascomycota | Dothideomycetes | Dothideomycetes order incertae sedis | Paranectriellaceae | Paranectriella |   | litter_saprotroph |   |   | no_endophytic_capacity |   | leaf/fruit/seed |   | non-aquatic |   |   | filamentous_mycelium`
+
+There was a typo that was removed 18 times across the dataset: `opening_slith-like` -> `opening_slit-like`
 
 ---
 # Cite the plugin
