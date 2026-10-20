@@ -444,7 +444,7 @@ jrk03920	Ascomycota	Dothideomycetes	Dothideales	Dothideales family incertae sedi
 jrk06930	Ascomycota	Dothideomycetes	Dothideales	Dothideales family incertae sedis	Pringsheimia		wood_saprotroph			no_endophytic_capacity		wood		non-aquatic			filamentous_mycelium	perithecium_(hymenium_hidden,_narrow_opening)	closed
 jrk09683	Ascomycota	Dothideomycetes	Dothideales	Neocelosporiaceae	Celosporium		plant_pathogen	litter_saprotroph			leaf/fruit/seed_pathogen	leaf/fruit/seed		non-aquatic			filamentous_mycelium	cleistothecium_(closed,_spherical)	closed
 jrk03838	Ascomycota	Dothideomycetes	Dothideomycetes order incertae sedis	Dothideomycetes family incertae sedis	Heteroconium		sooty_mold	litter_saprotroph	ericoid_mycorrhizal_one_species	root_endophyte_dark_septate		leaf/fruit/seed,sugar-rich_substrates		non-aquatic			filamentous_mycelium
-jrk04084	Ascomycota	Dothideomycetes	Dothideomycetes order incertae sedis	Dothideomycetes family incertae sedis	Hysterographium		wood_saprotroph					wood		non-aquatic			filamentous_mycelium	hysterothecium_(opening_slith-like)	closed
+jrk04084	Ascomycota	Dothideomycetes	Dothideomycetes order incertae sedis	Dothideomycetes family incertae sedis	Hysterographium		wood_saprotroph					wood		non-aquatic			filamentous_mycelium	hysterothecium_(opening_slit-like)	closed
 jrk05273	Ascomycota	Dothideomycetes	Dothideomycetes order incertae sedis	Dothideomycetes family incertae sedis	Monorhizina		epiphyte	litter_saprotroph				leaf/fruit/seed		non-aquatic			filamentous_mycelium
 jrk03273	Ascomycota	Dothideomycetes	Dothideomycetes order incertae sedis	Eriomycetaceae	Funbolia		wood_saprotroph					wood					filamentous_mycelium
 jrk01056	Ascomycota	Dothideomycetes	Dothideomycetes order incertae sedis	Thyrinulaceae	Blastacervulus		epiphyte	litter_saprotroph			leaf/fruit/seed_pathogen	leaf/fruit/seed		non-aquatic			filamentous_mycelium	perithecium_(hymenium_hidden,_narrow_opening)	closed
@@ -3151,20 +3151,20 @@ jrk01521	Ascomycota	Dothideomycetes	Gloniales	Gloniaceae	Cenococcum		ectomycorrh
 jrk03478	Ascomycota	Dothideomycetes	Gloniales	Gloniaceae	Glonium		wood_saprotroph	soil_saprotroph				wood,leaf/fruit/seed,soil		non-aquatic			filamentous_mycelium
 jrk07033	Ascomycota	Dothideomycetes	Gloniales	Gloniaceae	Pseudocenococcum		soil_saprotroph					soil		non-aquatic			filamentous_mycelium
 jrk07320	Ascomycota	Dothideomycetes	Gloniales	Gloniaceae	Purpurepithecium		litter_saprotroph					leaf/fruit/seed		non-aquatic		Pinus_cones	filamentous_mycelium
-jrk00105	Ascomycota	Dothideomycetes	Hysteriales	Hysteriaceae	Actidiographium		wood_saprotroph					wood	soft_rot	non-aquatic			filamentous_mycelium	hysterothecium_(opening_slith-like)	closed
-jrk03476	Ascomycota	Dothideomycetes	Hysteriales	Hysteriaceae	Gloniella		wood_saprotroph					wood		partly_aquatic			filamentous_mycelium	hysterothecium_(opening_slith-like)	closed
-jrk03477	Ascomycota	Dothideomycetes	Hysteriales	Hysteriaceae	Gloniopsis		wood_saprotroph					wood	other	non-aquatic			filamentous_mycelium	hysterothecium_(opening_slith-like)	closed
-jrk04078	Ascomycota	Dothideomycetes	Hysteriales	Hysteriaceae	Hysterium		wood_saprotroph					wood	soft_rot	partly_aquatic			filamentous_mycelium	hysterothecium_(opening_slith-like)	closed
-jrk04079	Ascomycota	Dothideomycetes	Hysteriales	Hysteriaceae	Hysterobrevium		wood_saprotroph					wood	soft_rot	non-aquatic			filamentous_mycelium	hysterothecium_(opening_slith-like)	closed
-jrk04080	Ascomycota	Dothideomycetes	Hysteriales	Hysteriaceae	Hysterocarina		wood_saprotroph					wood	soft_rot	non-aquatic			filamentous_mycelium	hysterothecium_(opening_slith-like)	closed
-jrk04081	Ascomycota	Dothideomycetes	Hysteriales	Hysteriaceae	Hysterodifractum		wood_saprotroph					wood	other	non-aquatic			filamentous_mycelium	hysterothecium_(opening_slith-like)	closed
+jrk00105	Ascomycota	Dothideomycetes	Hysteriales	Hysteriaceae	Actidiographium		wood_saprotroph					wood	soft_rot	non-aquatic			filamentous_mycelium	hysterothecium_(opening_slit-like)	closed
+jrk03476	Ascomycota	Dothideomycetes	Hysteriales	Hysteriaceae	Gloniella		wood_saprotroph					wood		partly_aquatic			filamentous_mycelium	hysterothecium_(opening_slit-like)	closed
+jrk03477	Ascomycota	Dothideomycetes	Hysteriales	Hysteriaceae	Gloniopsis		wood_saprotroph					wood	other	non-aquatic			filamentous_mycelium	hysterothecium_(opening_slit-like)	closed
+jrk04078	Ascomycota	Dothideomycetes	Hysteriales	Hysteriaceae	Hysterium		wood_saprotroph					wood	soft_rot	partly_aquatic			filamentous_mycelium	hysterothecium_(opening_slit-like)	closed
+jrk04079	Ascomycota	Dothideomycetes	Hysteriales	Hysteriaceae	Hysterobrevium		wood_saprotroph					wood	soft_rot	non-aquatic			filamentous_mycelium	hysterothecium_(opening_slit-like)	closed
+jrk04080	Ascomycota	Dothideomycetes	Hysteriales	Hysteriaceae	Hysterocarina		wood_saprotroph					wood	soft_rot	non-aquatic			filamentous_mycelium	hysterothecium_(opening_slit-like)	closed
+jrk04081	Ascomycota	Dothideomycetes	Hysteriales	Hysteriaceae	Hysterodifractum		wood_saprotroph					wood	other	non-aquatic			filamentous_mycelium	hysterothecium_(opening_slit-like)	closed
 jrk04083	Ascomycota	Dothideomycetes	Hysteriales	Hysteriaceae	Hysteroglonium		litter_saprotroph					leaf/fruit/seed	other	non-aquatic			filamentous_mycelium	other
-jrk05876	Ascomycota	Dothideomycetes	Hysteriales	Hysteriaceae	Oedohysterium		wood_saprotroph					wood	soft_rot	non-aquatic			filamentous_mycelium	hysterothecium_(opening_slith-like)	closed
-jrk05979	Ascomycota	Dothideomycetes	Hysteriales	Hysteriaceae	Ostreichnion		wood_saprotroph					wood	soft_rot	non-aquatic			filamentous_mycelium	hysterothecium_(opening_slith-like)	closed
+jrk05876	Ascomycota	Dothideomycetes	Hysteriales	Hysteriaceae	Oedohysterium		wood_saprotroph					wood	soft_rot	non-aquatic			filamentous_mycelium	hysterothecium_(opening_slit-like)	closed
+jrk05979	Ascomycota	Dothideomycetes	Hysteriales	Hysteriaceae	Ostreichnion		wood_saprotroph					wood	soft_rot	non-aquatic			filamentous_mycelium	hysterothecium_(opening_slit-like)	closed
 jrk07203	Ascomycota	Dothideomycetes	Hysteriales	Hysteriaceae	Pseudoscypha		litter_saprotroph					leaf/fruit/seed	other	non-aquatic			filamentous_mycelium
-jrk07256	Ascomycota	Dothideomycetes	Hysteriales	Hysteriaceae	Psiloglonium		wood_saprotroph					wood	soft_rot	non-aquatic			filamentous_mycelium	hysterothecium_(opening_slith-like)	closed
+jrk07256	Ascomycota	Dothideomycetes	Hysteriales	Hysteriaceae	Psiloglonium		wood_saprotroph					wood	soft_rot	non-aquatic			filamentous_mycelium	hysterothecium_(opening_slit-like)	closed
 jrk07611	Ascomycota	Dothideomycetes	Hysteriales	Hysteriaceae	Rhytidhysteron		wood_saprotroph					wood	soft_rot	partly_marine_(partly_non-aquatic)			filamentous_mycelium	apothecium_(hymenium_on_surface)	smooth
-jrk03548	Ascomycota	Dothideomycetes	Hysteriales	Hysteriales family incertae sedis	Graphyllium		wood_saprotroph					wood		non-aquatic			filamentous_mycelium	hysterothecium_(opening_slith-like)	closed
+jrk03548	Ascomycota	Dothideomycetes	Hysteriales	Hysteriales family incertae sedis	Graphyllium		wood_saprotroph					wood		non-aquatic			filamentous_mycelium	hysterothecium_(opening_slit-like)	closed
 jrk00207	Ascomycota	Dothideomycetes	Jahnulales	Aliquandostipitaceae	Aliquandostipite		wood_saprotroph					wood		freshwater			filamentous_mycelium
 jrk01144	Ascomycota	Dothideomycetes	Jahnulales	Aliquandostipitaceae	Brachiosphaera		litter_saprotroph					leaf/fruit/seed	other	freshwater			filamentous_mycelium
 jrk04211	Ascomycota	Dothideomycetes	Jahnulales	Aliquandostipitaceae	Jahnula		wood_saprotroph					wood	soft_rot	freshwater			filamentous_mycelium	cleistothecium_(closed,_spherical)	closed
@@ -3221,7 +3221,7 @@ jrk02584	Ascomycota	Dothideomycetes	Myriangiales	Myriangiales family incertae se
 jrk00106	Ascomycota	Dothideomycetes	Mytilinidiales	Mytilinidiaceae	Actidium		litter_saprotroph					leaf/fruit/seed		non-aquatic			filamentous_mycelium
 jrk03651	Ascomycota	Dothideomycetes	Mytilinidiales	Mytilinidiaceae	Halokirschsteiniothelia		wood_saprotroph					wood	soft_rot	marine			filamentous_mycelium
 jrk04795	Ascomycota	Dothideomycetes	Mytilinidiales	Mytilinidiaceae	Lophium		litter_saprotroph					leaf/fruit/seed		non-aquatic			filamentous_mycelium
-jrk05476	Ascomycota	Dothideomycetes	Mytilinidiales	Mytilinidiaceae	Mytilinidion		wood_saprotroph					wood	soft_rot	non-aquatic			filamentous_mycelium	hysterothecium_(opening_slith-like)	closed
+jrk05476	Ascomycota	Dothideomycetes	Mytilinidiales	Mytilinidiaceae	Mytilinidion		wood_saprotroph					wood	soft_rot	non-aquatic			filamentous_mycelium	hysterothecium_(opening_slit-like)	closed
 jrk05980	Ascomycota	Dothideomycetes	Mytilinidiales	Mytilinidiaceae	Ostreola		wood_saprotroph					wood	soft_rot	non-aquatic			filamentous_mycelium
 jrk06350	Ascomycota	Dothideomycetes	Mytilinidiales	Mytilinidiaceae	Peyronelia		unspecified_saprotroph						other	non-aquatic			filamentous_mycelium
 jrk07028	Ascomycota	Dothideomycetes	Mytilinidiales	Mytilinidiaceae	Pseudocamaropycnis		litter_saprotroph					leaf/fruit/seed		non-aquatic			filamentous_mycelium
@@ -3264,15 +3264,15 @@ jrk07542	Ascomycota	Dothideomycetes	Parmulariales	Parmulariaceae	Rhipidocarpon		
 jrk08533	Ascomycota	Dothideomycetes	Parmulariales	Parmulariaceae	Symphaeophyma		plant_pathogen				leaf/fruit/seed_pathogen			non-aquatic			filamentous_mycelium
 jrk08755	Ascomycota	Dothideomycetes	Parmulariales	Parmulariaceae	Thallomyces		plant_pathogen				leaf/fruit/seed_pathogen			non-aquatic			filamentous_mycelium
 jrk09332	Ascomycota	Dothideomycetes	Parmulariales	Parmulariaceae	Viegasella		plant_pathogen				leaf/fruit/seed_pathogen			non-aquatic			filamentous_mycelium
-jrk00881	Ascomycota	Dothideomycetes	Patellariales	Patellariaceae	Baggea		wood_saprotroph			no_endophytic_capacity		wood		non-aquatic			filamentous_mycelium	hysterothecium_(opening_slith-like)	closed
+jrk00881	Ascomycota	Dothideomycetes	Patellariales	Patellariaceae	Baggea		wood_saprotroph			no_endophytic_capacity		wood		non-aquatic			filamentous_mycelium	hysterothecium_(opening_slit-like)	closed
 jrk00908	Ascomycota	Dothideomycetes	Patellariales	Patellariaceae	Banhegyia		wood_saprotroph			no_endophytic_capacity		wood		partly_marine_(partly_non-aquatic)			filamentous_mycelium	apothecium_(hymenium_on_surface)	smooth
 jrk01940	Ascomycota	Dothideomycetes	Patellariales	Patellariaceae	Colensoniella		wood_saprotroph			no_endophytic_capacity		wood		non-aquatic			filamentous_mycelium	apothecium_(hymenium_on_surface)	smooth
 jrk02941	Ascomycota	Dothideomycetes	Patellariales	Patellariaceae	Endotryblidium		wood_saprotroph			no_endophytic_capacity		wood		non-aquatic			filamentous_mycelium	apothecium_(hymenium_on_surface)	smooth
-jrk03487	Ascomycota	Dothideomycetes	Patellariales	Patellariaceae	Glyphium		wood_saprotroph			no_endophytic_capacity		wood		non-aquatic			filamentous_mycelium	hysterothecium_(opening_slith-like)	closed
+jrk03487	Ascomycota	Dothideomycetes	Patellariales	Patellariaceae	Glyphium		wood_saprotroph			no_endophytic_capacity		wood		non-aquatic			filamentous_mycelium	hysterothecium_(opening_slit-like)	closed
 jrk03631	Ascomycota	Dothideomycetes	Patellariales	Patellariaceae	Haematomyxa		wood_saprotroph			no_endophytic_capacity		wood		non-aquatic			filamentous_mycelium	apothecium_(hymenium_on_surface)	smooth
 jrk03893	Ascomycota	Dothideomycetes	Patellariales	Patellariaceae	Holmiella		wood_saprotroph			no_endophytic_capacity		wood		non-aquatic			filamentous_mycelium	apothecium_(hymenium_on_surface)	smooth
-jrk04086	Ascomycota	Dothideomycetes	Patellariales	Patellariaceae	Hysteropatella		wood_saprotroph			no_endophytic_capacity		wood		non-aquatic			filamentous_mycelium	hysterothecium_(opening_slith-like)	closed
-jrk04087	Ascomycota	Dothideomycetes	Patellariales	Patellariaceae	Hysteropeltella		litter_saprotroph			no_endophytic_capacity		leaf/fruit/seed		non-aquatic			filamentous_mycelium	hysterothecium_(opening_slith-like)	closed
+jrk04086	Ascomycota	Dothideomycetes	Patellariales	Patellariaceae	Hysteropatella		wood_saprotroph			no_endophytic_capacity		wood		non-aquatic			filamentous_mycelium	hysterothecium_(opening_slit-like)	closed
+jrk04087	Ascomycota	Dothideomycetes	Patellariales	Patellariaceae	Hysteropeltella		litter_saprotroph			no_endophytic_capacity		leaf/fruit/seed		non-aquatic			filamentous_mycelium	hysterothecium_(opening_slit-like)	closed
 jrk04444	Ascomycota	Dothideomycetes	Patellariales	Patellariaceae	Lahmiomyces		lichenized			no_endophytic_capacity				non-aquatic			thallus_photosynthetic	apothecium_(hymenium_on_surface)	smooth
 jrk04519	Ascomycota	Dothideomycetes	Patellariales	Patellariaceae	Lecanidiella		wood_saprotroph			no_endophytic_capacity		wood		non-aquatic			filamentous_mycelium	apothecium_(hymenium_on_surface)	smooth
 jrk04738	Ascomycota	Dothideomycetes	Patellariales	Patellariaceae	Lirellodisca		wood_saprotroph			no_endophytic_capacity		wood		non-aquatic			filamentous_mycelium	apothecium_(hymenium_on_surface)	smooth
@@ -5431,7 +5431,7 @@ jrk03738	Ascomycota	Leotiomycetes	Helotiales	Helotiaceae	Helicocentralis		litter
 jrk04019	Ascomycota	Leotiomycetes	Helotiales	Helotiaceae	Hymenoscyphus		litter_saprotroph	plant_pathogen			leaf/fruit/seed_pathogen	leaf/fruit/seed		partly_freshwater_(partly_non-aquatic)			filamentous_mycelium	apothecium_(hymenium_on_surface)	smooth
 jrk04021	Ascomycota	Leotiomycetes	Helotiales	Helotiaceae	Hymenotorrendiella		litter_saprotroph					leaf/fruit/seed		non-aquatic			filamentous_mycelium	apothecium_(hymenium_on_surface)	smooth
 jrk05346	Ascomycota	Leotiomycetes	Helotiales	Helotiaceae	Muscicola		plant_pathogen				leaf/fruit/seed_pathogen			non-aquatic		mosses	filamentous_mycelium	apothecium_(hymenium_on_surface)	smooth
-jrk05477	Ascomycota	Leotiomycetes	Helotiales	Helotiaceae	Mytilodiscus		litter_saprotroph					leaf/fruit/seed		non-aquatic			filamentous_mycelium	hysterothecium_(opening_slith-like)	closed
+jrk05477	Ascomycota	Leotiomycetes	Helotiales	Helotiaceae	Mytilodiscus		litter_saprotroph					leaf/fruit/seed		non-aquatic			filamentous_mycelium	hysterothecium_(opening_slit-like)	closed
 jrk06393	Ascomycota	Leotiomycetes	Helotiales	Helotiaceae	Phaeohelotium		ectomycorrhizal							non-aquatic			filamentous_mycelium	apothecium_(hymenium_on_surface)	smooth	short-distance_delicate	/phaeohelotium
 jrk06643	Ascomycota	Leotiomycetes	Helotiales	Helotiaceae	Pirottaea		litter_saprotroph					leaf/fruit/seed		non-aquatic			filamentous_mycelium	apothecium_(hymenium_on_surface)	smooth
 jrk06653	Ascomycota	Leotiomycetes	Helotiales	Helotiaceae	Pithyella		unspecified_saprotroph		hypervariable,_on_mosses,fern_roots_and_pyrenomycetes			leaf/fruit/seed,roots,fungal_material		non-aquatic			filamentous_mycelium	apothecium_(hymenium_on_surface)	smooth
