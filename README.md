@@ -122,7 +122,7 @@ This action takes taxonomic assignments as input and produces a metadata table w
 ```bash
 qiime fungal-traits annotate \
   --i-taxonomy taxonomy.qza \
-  --o-metadata fungal_traits.qza
+  --o-fungal-traits fungal_traits.qza
 ```
 
 The metadata output can be examined in the browser:
